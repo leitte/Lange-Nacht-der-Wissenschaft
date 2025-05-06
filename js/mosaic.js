@@ -17,9 +17,9 @@ document.addEventListener("DOMContentLoaded", function () {
     const svg = d3.select("#mosaic-plot"),
           width = +svg.attr("width"),
           height = +svg.attr("height"),
-          margin = {top: 20, right: 10, bottom: 40, left: 110};
-    const fontSize = 16;
+          margin = {top: 30, right: 110, bottom: 40, left: 2};
   
+    const fontSize = 16;
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
   
@@ -45,7 +45,14 @@ document.addEventListener("DOMContentLoaded", function () {
   
     let xOffset = 0;
   
-    // Draw mosaic rectangles
+    // Emoji mapping
+    const emojiMap = {
+      "beach": "🏖️",
+      "mountains": "🏔️",
+      "city": "🏙️",
+      "at home": "🏡"
+    };
+  
     placeTotals.forEach(place => {
       const colWidth = xScale(place.total);
       const xStart = xScale(xOffset);
@@ -59,120 +66,102 @@ document.addEventListener("DOMContentLoaded", function () {
       let yOffset = 0;
       place.values.forEach(d => {
         const h = yScale(d.count);
-      
-        // Draw rectangle with outline
+  
+        // Rectangle
         colGroup.append("rect")
                 .attr("x", 0)
                 .attr("y", yOffset)
                 .attr("width", colWidth)
                 .attr("height", h)
                 .attr("fill", color(d.type))
-                .attr("stroke", "#333")       // outline
-                .attr("stroke-width", 0.5);   // thin border
-      
-        // Add percent label in center
+                .attr("stroke", "#333")
+                .attr("stroke-width", 0.5);
+  
+        // Inside % label
         const percent = (d.count / total) * 100;
         if (h > 12 && colWidth > 25) {
-        colGroup.append("text")
-                .attr("x", colWidth / 2)
-                .attr("y", yOffset + h / 2)
-                .attr("text-anchor", "middle")
-                .attr("dominant-baseline", "middle")
-                .attr("font-size", "12px")
-                .attr("fill", "#333")
-                .text(`${percent.toFixed(0)}%`);
+          colGroup.append("text")
+                  .attr("x", colWidth / 2)
+                  .attr("y", yOffset + h / 2)
+                  .attr("text-anchor", "middle")
+                  .attr("dominant-baseline", "middle")
+                  .attr("font-size", "12px")
+                  .attr("fill", "#333")
+                  .text(`${percent.toFixed(0)}%`);
         }
-
-      
+  
         yOffset += h;
       });
-
-      // Emoji mapping
-      const emojiMap = {
-        "beach": "🏖️",
-        "mountains": "🏔️",
-        "city": "🏙️",
-        "at home": "🏡"
-    };
-    
-    // Add top-center total % for the bar
-    const placePercent = (place.total / total) * 100;
-    plotGroup.append("text")
-            .attr("x", xStart + colWidth / 2)
-            .attr("y", -5) // above the plot area
-            .attr("text-anchor", "middle")
-            .attr("font-size", "16px")
-            .attr("fill", "#333")
-            .text(`${emojiMap[place.place] || ""} ${placePercent.toFixed(0)}%`);
-
-      
   
-
-    
-    plotGroup.append("text")
-            .attr("x", xStart + colWidth / 2)
-            .attr("y", plotHeight + 20)
-            .attr("text-anchor", "middle")
-            .attr("font-size", "16px")
-            .text(`${place.place}`);
+      // Column % total on top
+      const placePercent = (place.total / total) * 100;
+      plotGroup.append("text")
+               .attr("x", xStart + colWidth / 2)
+               .attr("y", -10)
+               .attr("text-anchor", "middle")
+               .attr("font-size", "16px")
+               .attr("fill", "#333")
+               .text(`${emojiMap[place.place] || ""} ${placePercent.toFixed(0)}%`);
   
+      // X label below
+      plotGroup.append("text")
+               .attr("x", xStart + colWidth / 2)
+               .attr("y", plotHeight + 20)
+               .attr("text-anchor", "middle")
+               .attr("font-size", "16px")
+               .text(`${place.place}`);
   
       xOffset += place.total;
     });
   
-    // Add Y-axis category labels (aligned to the first column)
-    const first = placeTotals[0];
-    const firstYScale = d3.scaleLinear()
-                          .domain([0, d3.sum(first.values, d => d.count)])
-                          .range([0, plotHeight]);
+    // === Y-axis Labels aligned to RIGHT-most column ===
+    const last = placeTotals.at(-1);
+    const lastYScale = d3.scaleLinear()
+                         .domain([0, d3.sum(last.values, d => d.count)])
+                         .range([0, plotHeight]);
+  
+    // Compute totals per type
+    const typeTotals = d3.rollup(
+      data,
+      v => d3.sum(v, d => d.count),
+      d => d.type
+    );
   
     let labelYOffset = 0;
-    // Compute total per type across all places
-    const typeTotals = d3.rollup(
-        data,
-        v => d3.sum(v, d => d.count),
-        d => d.type
-    );
-    
-    labelYOffset = 0;
-    first.values.forEach(d => {
-        const h = firstYScale(d.count);
-        const midY = margin.top + labelYOffset + h / 2;
-    
-        const textPadding = 4;
-        const labelWidth = 100;
-        const labelHeight = fontSize + textPadding;
-    
-        const typeTotal = typeTotals.get(d.type);
-        const typePercent = (typeTotal / total) * 100;
-    
-        const labelText = `${d.type} (${typePercent.toFixed(0)}%)`;
-    
-        // Background box
-        svg.append("rect")
-            .attr("x", margin.left - labelWidth - 10)
-            .attr("y", midY - labelHeight / 2)
-            .attr("width", labelWidth)
-            .attr("height", labelHeight)
-            .attr("fill", color(d.type))
-            // .attr("stroke", "#333")
-            .attr("stroke-width", 0.5)
-            .attr("rx", 3); // rounded corners
-    
-        // Label text with percent
-        svg.append("text")
-            .attr("x", margin.left - labelWidth / 2 - 10)
-            .attr("y", midY)
-            .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "middle")
-            .attr("font-size", `${fontSize}px`)
-            .attr("fill", "#000")
-            .text(labelText);
-    
-        labelYOffset += h;
+    const labelX = margin.left + plotWidth + 10;
+  
+    last.values.forEach(d => {
+      const h = lastYScale(d.count);
+      const midY = margin.top + labelYOffset + h / 2;
+  
+      const typeTotal = typeTotals.get(d.type);
+      const typePercent = (typeTotal / total) * 100;
+      const labelText = `${d.type} (${typePercent.toFixed(0)}%)`;
+  
+      const labelWidth = 100;
+      const labelHeight = fontSize + 4;
+  
+      // Background box
+      svg.append("rect")
+         .attr("x", labelX)
+         .attr("y", midY - labelHeight / 2)
+         .attr("width", labelWidth)
+         .attr("height", labelHeight)
+         .attr("fill", color(d.type))
+         .attr("stroke-width", 0.5)
+         .attr("rx", 3);
+  
+      // Label text
+      svg.append("text")
+         .attr("x", labelX + labelWidth / 2)
+         .attr("y", midY)
+         .attr("text-anchor", "middle")
+         .attr("dominant-baseline", "middle")
+         .attr("font-size", `${fontSize}px`)
+         .attr("fill", "#000")
+         .text(labelText);
+  
+      labelYOffset += h;
     });
-  
-  
-      
   });
   
