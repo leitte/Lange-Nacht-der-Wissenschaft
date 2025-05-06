@@ -48,11 +48,14 @@
             font-size: 50px;
         }
 
-        .card.center {
+        .flex-column {
             display: flex;
             flex-direction: column;
+            justify-content: flex-start;
+        }
+
+        .card.center {
             align-items: center;
-            justify-content: center;
             text-align: center;
         }
 
@@ -88,6 +91,10 @@
             font-size: 0.9rem;
             color: #666;
         }
+
+        .border-right {
+            border-right: 1px solid #e0e0e0;
+        }
     </style>
 </head>
 
@@ -98,22 +105,22 @@
                 <h1 class="title">Sehen und Verstehen</h1>
                 <div class="subtitle" style="color: #8d8d8d;">Erlebe wie Daten lebendig werden.</div>
             </div>
-            <div class="card center  metric col-xs-2">
+            <div class="card flex-column center  metric col-xs-2">
                 <div class="emoji-icon">🕒</div>
                 <h4>Aktivität</h3>
                     <svg id="countplot" width="250" height="50"></svg>
             </div>
-            <div class="card center metric col-xs-2">
+            <div class="card flex-column center metric col-xs-2">
                 <i class="fas fa-user fa-2x" style="color: #333;"></i>
                 <h4>Teilnehmer</h3>
                     <h2>39</h2>
             </div>
-            <div class="card center metric col-xs-2">
+            <div class="card flex-column center metric col-xs-2">
                 <div class="emoji-icon">🫶</div>
                 <h4>💛-Emoji</h3>
                     <h2>12</h2>
             </div>
-            <div class="card center metric col-xs-2">
+            <div class="card flex-column center metric col-xs-2">
                 <i class="fas fa-location-dot fa-2x" style="color: #333;"></i>
                 <h4>Monte Mare</h3>
                     <h2>42</h2>
@@ -122,16 +129,16 @@
         <hr />
         <main>
             <div class="row">
-                <div class="card col-xs-4">
+                <div class="card flex-column col-xs-4 border-right">
                     <h3>Welcher Urlaub darf es sein?</h3>
                     <!-- <div class="chart-placeholder">[Bar Chart Placeholder]</div> -->
                     <svg id="mosaic-plot" width="450" height="350"></svg>
                 </div>
-                <div class="card center col-xs-4">
+                <div class="card flex-column center col-xs-4 border-right">
                     <h3>Unsere Emoji Charts</h3>
                     <svg id="emoji-countplot" width="450" height="350"></svg>
                 </div>
-                <div class="card center col-xs-4">
+                <div class="card flex-column center col-xs-4">
                     <h3>Wir trinken am liebsten</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; justify-items: center; align-items: center;">
                         <svg id="coffee-gauge" width="180" height="180"></svg>
