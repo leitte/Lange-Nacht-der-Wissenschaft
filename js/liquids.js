@@ -339,6 +339,19 @@ function loadLiquidFillGauge(elementId, value, config, label) {
 
 
 document.addEventListener("DOMContentLoaded", function () {
+    function updateGauges(data) {
+        const validRows = data.filter(d => d.Timestamp && d.Timestamp.trim() !== "");
+        const total = validRows.length;
+
+        // Update the gauges with new values
+        ['Kaffee', 'Tee', 'Energy Drink', 'Saft'].forEach((label, index) => {
+            const gauge = [gauge_coffee, gauge_tea, gauge_energy, gauge_juice][index];
+            const value = Math.round((validRows.filter(row => row["Leckere Getränke"] && row["Leckere Getränke"].includes(label)).length / total) * 100);
+            gauge.update(value);
+        });
+    }
+
+    // Configure the gauges
     var config_coffee = liquidFillGaugeDefaultSettings();
         config_coffee.waveColor = "#94550b";
     var config_tea = liquidFillGaugeDefaultSettings();
@@ -356,8 +369,13 @@ document.addEventListener("DOMContentLoaded", function () {
         config_juice.waveOffset = 0.5;
         config_juice.waveAnimateTime = 1700;
         config_juice.waveTextColor = "#333333";
-        var gauge_coffee = loadLiquidFillGauge("coffee-gauge", Math.floor(Math.random() * 101), config_coffee, "Kaffee");
-        var gauge_tea = loadLiquidFillGauge("tea-gauge", Math.floor(Math.random() * 101), config_tea, "Tee");
-        var gauge_energy = loadLiquidFillGauge("energy-gauge", Math.floor(Math.random() * 101), config_energy, "Energy Drink");
-        var gauge_juice = loadLiquidFillGauge("juice-gauge", Math.floor(Math.random() * 101), config_juice, "Saft");
+
+    var gauge_coffee = loadLiquidFillGauge("coffee-gauge", 0, config_coffee, "Kaffee");
+    var gauge_tea = loadLiquidFillGauge("tea-gauge", 0, config_tea, "Tee");
+    var gauge_energy = loadLiquidFillGauge("energy-gauge", 0, config_energy, "Energy Drink");
+    var gauge_juice = loadLiquidFillGauge("juice-gauge", 0, config_juice, "Saft");
+    
+    if (typeof DashboardData !== "undefined" && DashboardData.subscribe) {
+        DashboardData.subscribe(updateGauges);
+    }
 });
