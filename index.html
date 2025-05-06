@@ -9,7 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script defer src="js/mosaic.js"></script> <!-- Defer = wait until DOM is ready -->
+<<<<<<< HEAD
     <script defer src="js/liquids.js"></script>
+=======
+    <script defer src="js/countplot.js"></script> <!-- Defer = wait until DOM is ready -->
+    <script defer src="js/emojicounts.js"></script> <!-- Defer = wait until DOM is ready -->
+>>>>>>> 71a93cf8b81ddfa98748f0a1631bc941920f64cf
     <title>Sehen und Verstehen</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
@@ -75,9 +80,14 @@
   <body>
     <div class="page container">
         <header class="row" style="align-items: flex-end; margin-top: 1rem;">
-            <div class="card col-xs-6">
+            <div class="card col-xs-4">
                 <h1 class="title">Sehen und Verstehen</h1>
                 <div class="subtitle" style="color: #8d8d8d;">Erlebe wie Daten lebendig werden.</div>
+            </div>
+            <div class="card center  metric col-xs-2">
+                <div class="emoji-icon">🕒</div>
+                <h4>Aktivität</h3>
+                <svg id="countplot" width="250" height="50"></svg>
             </div>
             <div class="card center metric col-xs-2">
                 <i class="fas fa-user fa-2x" style="color: #333;"></i>
@@ -98,14 +108,14 @@
         <hr />
         <main>
             <div class="row">
-                <div class="card center col-xs-4">
+                <div class="card col-xs-4">
                     <h3>Welcher Urlaub darf es sein?</h3>
                     <!-- <div class="chart-placeholder">[Bar Chart Placeholder]</div> -->
-                    <svg id="mosaic-plot" width="450" height="360"></svg>
+                    <svg id="mosaic-plot" width="450" height="350"></svg>
                 </div>
                 <div class="card center col-xs-4">
                     <h3>Unsere Emoji Charts</h3>
-                    <div class="chart-placeholder">[Bar Chart Placeholder]</div>
+                    <svg id="emoji-countplot" width="450" height="350"></svg>
                 </div>
                 <div class="card center col-xs-4">
                     <h3>Wir trinken am liebsten</h3>
