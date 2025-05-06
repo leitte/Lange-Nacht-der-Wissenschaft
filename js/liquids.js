@@ -28,11 +28,12 @@ function liquidFillGaugeDefaultSettings() {
         valueCountUp: true, // If true, the displayed value counts up from 0 to it's final value upon loading. If false, the final value is displayed.
         displayPercent: true, // If true, a % symbol is displayed after the value.
         textColor: "#333", // The color of the value text when the wave does not overlap it.
-        waveTextColor: "#F3F3F3" // The color of the value text when the wave overlaps it.    
+        waveTextColor: "#F3F3F3", // The color of the value text when the wave overlaps it.    
+        labelTextSize: 0.6 // The relative height of the label text to display in the wave circle. 1 = 50%
     };
 }
 
-function loadLiquidFillGauge(elementId, value, config) {
+function loadLiquidFillGauge(elementId, value, config, label) {
     if (config == null) config = liquidFillGaugeDefaultSettings();
 
     const gauge = d3.select("#" + elementId);
@@ -54,6 +55,7 @@ function loadLiquidFillGauge(elementId, value, config) {
     }
 
     const textPixels = (config.textSize * radius / 2);
+    const labelTextPixels = (config.labelTextSize * radius / 2);
     const textFinalValue = parseFloat(value).toFixed(2);
     const textStartValue = config.valueCountUp ? config.minValue : textFinalValue;
     const percentText = config.displayPercent ? "%" : "";
@@ -131,6 +133,15 @@ function loadLiquidFillGauge(elementId, value, config) {
        .attr('transform', 'translate(' + radius + ',' + textRiseScaleY(config.textVertPosition) + ')');
     let text1InterpolatorValue = textStartValue;
 
+    // Label text where the wave does not overlap.
+    const labelText = gaugeGroup.append("text")
+        .text(label)
+        .attr("class", "liquidFillGaugeText")
+        .attr("text-anchor", "middle")
+        .attr("font-size", labelTextPixels + "px")
+        .style("fill", config.textColor)
+        .attr('transform', 'translate(' + radius + ',' + textRiseScaleY(0.5) + ')');
+
     // The clipping wave area.
     const clipArea = d3.area()
         .x(function (d) { return waveScaleX(d.x); })
@@ -162,6 +173,15 @@ function loadLiquidFillGauge(elementId, value, config) {
        .style("fill", config.waveTextColor)
        .attr('transform', 'translate(' + radius + ',' + textRiseScaleY(config.textVertPosition) + ')');
     let text2InterpolatorValue = textStartValue;
+
+    // Label text where the wave does overlap.
+    const labelText2 = fillCircleGroup.append("text")
+        .text(label)
+        .attr("class", "liquidFillGaugeText")
+        .attr("text-anchor", "middle")
+        .attr("font-size", labelTextPixels + "px")
+        .style("fill", config.waveTextColor)
+        .attr('transform', 'translate(' + radius + ',' + textRiseScaleY(0.5) + ')');
 
     // Make the value count up.
     if (config.valueCountUp) {
@@ -334,8 +354,8 @@ document.addEventListener("DOMContentLoaded", function () {
         config_juice.waveAnimateTime = 1700;
         config_juice.waveTextColor = "#333333";
 
-    var gauge_coffee = loadLiquidFillGauge("coffee-gauge", 75, config_coffee);
-    var gauge_tea = loadLiquidFillGauge("tea-gauge", 75, config_tea);
-    var gauge_energy = loadLiquidFillGauge("energy-gauge", 75, config_energy);
-    var gauge_juice = loadLiquidFillGauge("juice-gauge", 75, config_juice);
+    var gauge_coffee = loadLiquidFillGauge("coffee-gauge", 75, config_coffee, "Kaffee");
+    var gauge_tea = loadLiquidFillGauge("tea-gauge", 75, config_tea, "Tee");
+    var gauge_energy = loadLiquidFillGauge("energy-gauge", 75, config_energy, "Energy Drink");
+    var gauge_juice = loadLiquidFillGauge("juice-gauge", 75, config_juice, "Saft");
 });
