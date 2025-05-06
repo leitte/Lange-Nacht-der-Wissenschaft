@@ -342,11 +342,13 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateGauges(data) {
         const validRows = data.filter(d => d.Timestamp && d.Timestamp.trim() !== "");
         const total = validRows.length;
-
+        const drinks = validRows.map(d => d["Leckere Getränke"]);
+        var absolute = 0;
         // Update the gauges with new values
         ['Kaffee', 'Tee', 'Energy Drink', 'Saft'].forEach((label, index) => {
             const gauge = [gauge_coffee, gauge_tea, gauge_energy, gauge_juice][index];
-            const value = Math.round((validRows.filter(row => row["Leckere Getränke"] && row["Leckere Getränke"].includes(label)).length / total) * 100);
+            absolute = drinks.filter(e => e && e.includes(label)).length;
+            const value = Math.round(absolute / total * 100);
             gauge.update(value);
         });
     }
