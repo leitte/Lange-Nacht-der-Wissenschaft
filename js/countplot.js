@@ -1,18 +1,27 @@
 document.addEventListener("DOMContentLoaded", function () {
-    // Simulate hourly timestamps between 17:00 and 23:00
-    const users = Array.from({ length: 200 }, () => {
-        const hour = 17 + Math.floor(Math.random() * 6);
-        const minute = Math.floor(Math.random() * 60);
-        const timestamp = new Date();
-        timestamp.setHours(hour, minute, 0, 0);
-        return { timestamp: timestamp.toISOString() };
-    });
+    // Check if DashboardData is available
+    if (typeof DashboardData !== "undefined" && DashboardData.subscribe) {
+        // Use live data
+        DashboardData.subscribe(renderChart);
+    } else {
+        // Use fallback/synthetic data
+        const data = Array.from({ length: 200 }, () => {
+            const hour = 17 + Math.floor(Math.random() * 6);
+            const minute = Math.floor(Math.random() * 60);
+            const timestamp = new Date();
+            timestamp.setHours(hour, minute, 0, 0);
+            return { Timestamp: timestamp.toISOString() };
+        });
+        renderChart(data);
+    }
+});
 
+function renderChart(users) {
     // Aggregate counts per hour
     const counts = d3.rollup(
         users,
         v => v.length,
-        d => new Date(d.timestamp).getHours()
+        d => new Date(d.Timestamp).getHours()
     );
 
     const countArray = Array.from({ length: 6 }, (_, i) => {
@@ -61,4 +70,4 @@ document.addEventListener("DOMContentLoaded", function () {
         .attr("font-size", "10px")
         .attr("fill", "#333") // dark gray or use "#000" for black
         .text(d => `${d.hour}h`);
-});
+};
