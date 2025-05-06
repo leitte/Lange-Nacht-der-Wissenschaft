@@ -343,6 +343,7 @@ document.addEventListener("DOMContentLoaded", function () {
         config_coffee.waveColor = "#94550b";
     var config_tea = liquidFillGaugeDefaultSettings();
         config_tea.waveColor = "#a1a270";
+        config_tea.waveColor = "#B7CF9F";
         config_tea.waveOffset = 0.5;
         config_tea.waveAnimateTime = 1700;
         config_tea.waveTextColor = "#333333";
@@ -351,7 +352,7 @@ document.addEventListener("DOMContentLoaded", function () {
         config_energy.waveColor = "#90EE90";
     var config_juice = liquidFillGaugeDefaultSettings();
         config_juice.waveColor = "#d56b24";
-        config_juice.waveColor = "#FFD700";
+        config_juice.waveColor = "#f9e055";
         config_juice.waveOffset = 0.5;
         config_juice.waveAnimateTime = 1700;
         config_juice.waveTextColor = "#333333";

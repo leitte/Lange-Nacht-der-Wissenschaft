@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .attr("y", d => y(d.name)) // Position bars based on name
     .attr("width", d => x(d.count)) // Bar length based on count
     .attr("height", y.bandwidth()) // Bar height based on y scale
-    .attr("fill", "#87CEFA");
+    .attr("fill", "#abd9ec");
 
   // 7. Grid lines in front
   const xTicks = x.ticks(4);

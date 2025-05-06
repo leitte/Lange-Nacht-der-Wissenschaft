@@ -60,7 +60,7 @@ function renderChart(users) {
         .attr("y", d => y(d.count))
         .attr("width", x.bandwidth())
         .attr("height", d => plotHeight - y(d.count))
-        .attr("fill", "#87CEFA"); // light blue (relaxed)
+        .attr("fill", "#abd9ec"); // light blue (relaxed)
 
     // Dark bottom-aligned hour labels
     g.selectAll("text")

@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .attr("y", d => y(d.count))
         .attr("width", x.bandwidth())
         .attr("height", d => plotHeight - y(d.count))
-        .attr("fill", "#87CEFA");
+        .attr("fill", "#abd9ec");
 
     // 7. Grid lines in front
     const yTicks = y.ticks(4);
