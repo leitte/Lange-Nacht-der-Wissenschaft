@@ -380,4 +380,10 @@ document.addEventListener("DOMContentLoaded", function () {
     if (typeof DashboardData !== "undefined" && DashboardData.subscribe) {
         DashboardData.subscribe(updateGauges);
     }
+    else {
+        [gauge_coffee, gauge_tea, gauge_energy, gauge_juice].forEach(gauge => {
+            gauge.update(Math.floor(Math.random() * 101));
+        }
+        );
+    }
 });
