@@ -1,11 +1,13 @@
 <!doctype html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="color-scheme" content="light dark">
     <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css" >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css"
+        type="text/css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script defer src="js/mosaic.js"></script> <!-- Defer = wait until DOM is ready -->
@@ -14,7 +16,8 @@
     <title>Sehen und Verstehen</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
-        html, body {
+        html,
+        body {
             height: 100%;
         }
 
@@ -28,11 +31,13 @@
         .page {
             display: flex;
             flex-direction: column;
-            min-height: 100vh; /* full viewport height */
+            min-height: 100vh;
+            /* full viewport height */
         }
 
         main {
-            flex: 1; /* takes up all remaining space */
+            flex: 1;
+            /* takes up all remaining space */
         }
 
         h1 {
@@ -51,17 +56,19 @@
         }
 
         .card.metric h4 {
-        margin-bottom: 0.2rem; /* reduce space below heading */
+            margin-bottom: 0.2rem;
+            /* reduce space below heading */
         }
 
         .card.metric h2 {
-        margin-bottom: 0.2rem; /* reduce space below heading */
+            margin-bottom: 0.2rem;
+            /* reduce space below heading */
         }
 
         .card.metric .emoji-icon {
-        font-size: 2rem;
-        line-height: 1;
-        margin-bottom: 0.rem;
+            font-size: 2rem;
+            line-height: 1;
+            margin-bottom: 0.rem;
         }
 
         .card h3 {
@@ -70,10 +77,20 @@
             margin-bottom: .5rem;
         }
 
-        .chart-placeholder { background: #e4e4e4; height: 340px; width: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #666; }
+        .chart-placeholder {
+            background: #e4e4e4;
+            height: 340px;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            color: #666;
+        }
     </style>
-  </head>
-  <body>
+</head>
+
+<body>
     <div class="page container">
         <header class="row" style="align-items: flex-end; margin-top: 1rem;">
             <div class="card col-xs-4">
@@ -83,22 +100,22 @@
             <div class="card center  metric col-xs-2">
                 <div class="emoji-icon">🕒</div>
                 <h4>Aktivität</h3>
-                <svg id="countplot" width="250" height="50"></svg>
+                    <svg id="countplot" width="250" height="50"></svg>
             </div>
             <div class="card center metric col-xs-2">
                 <i class="fas fa-user fa-2x" style="color: #333;"></i>
                 <h4>Teilnehmer</h3>
-                <h2>39</h2>
+                    <h2>39</h2>
             </div>
             <div class="card center metric col-xs-2">
                 <div class="emoji-icon">🫶</div>
                 <h4>💛-Emoji</h3>
-                <h2>12</h2>
+                    <h2>12</h2>
             </div>
             <div class="card center metric col-xs-2">
                 <i class="fas fa-location-dot fa-2x" style="color: #333;"></i>
                 <h4>Monte Mare</h3>
-                <h2>42</h2>
+                    <h2>42</h2>
             </div>
         </header>
         <hr />
@@ -136,5 +153,6 @@
             Visualisierung @ RPTU
         </footer>
     </div>
-  </body>
+</body>
+
 </html>
