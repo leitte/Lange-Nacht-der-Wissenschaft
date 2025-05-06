@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="color-scheme" content="light dark">
+    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css" >
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <title>Hello world!</title>
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        html, body {
+            height: 100%;
+        }
+
+        footer {
+            background-color: #999;
+            color: white;
+            text-align: right;
+            padding-right: 1rem;
+        }
+
+        .page {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh; /* full viewport height */
+        }
+
+        main {
+            flex: 1; /* takes up all remaining space */
+        }
+
+        h1 {
+            --pico-font-family: Pacifico, cursive;
+            --pico-font-weight: 400;
+            --pico-typography-spacing-vertical: 0.75rem;
+            font-size: 50px;
+        }
+
+        .card.center {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .card.metric h4 {
+        margin-bottom: 0.2rem; /* reduce space below heading */
+        }
+
+        .card.metric h2 {
+        margin-bottom: 0.2rem; /* reduce space below heading */
+        }
+
+        .card.metric .emoji-icon {
+        font-size: 2rem;
+        line-height: 1;
+        margin-bottom: 0.rem;
+        }
+
+        .card h3 {
+            font-weight: 200;
+            color: #333;
+            margin-bottom: .5rem;
+        }
+
+        .chart-placeholder { background: #e4e4e4; height: 340px; width: 100%; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; color: #666; }
+    </style>
+  </head>
+  <body>
+    <div class="page container">
+        <header class="row" style="align-items: flex-end; margin-top: 1rem;">
+            <div class="card col-xs-6">
+                <h1 class="title">Sehen und Verstehen</h1>
+                <div class="subtitle" style="color: #8d8d8d;">Erlebe wie Daten lebendig werden.</div>
+            </div>
+            <div class="card center metric col-xs-2">
+                <i class="fas fa-user fa-2x" style="color: #333;"></i>
+                <h4>Teilnehmer</h3>
+                <h2>39</h2>
+            </div>
+            <div class="card center metric col-xs-2">
+                <div class="emoji-icon">🫶</div>
+                <h4>💛-Emoji</h3>
+                <h2>12</h2>
+            </div>
+            <div class="card center metric col-xs-2">
+                <i class="fas fa-location-dot fa-2x" style="color: #333;"></i>
+                <h4>Monte Mare</h3>
+                <h2>42</h2>
+            </div>
+        </header>
+        <hr />
+        <main>
+            <div class="row">
+                <div class="card center col-xs-4">
+                    <h3>Welcher Urlaub darf es sein?</h3>
+                    <div class="chart-placeholder">[Bar Chart Placeholder]</div>
+                </div>
+                <div class="card center col-xs-4">
+                    <h3>Unsere Emoji Charts</h3>
+                    <div class="chart-placeholder">[Bar Chart Placeholder]</div>
+                </div>
+                <div class="card center col-xs-4">
+                    <h3>Wir trinken am liebsten</h3>
+                    <div class="chart-placeholder">[Bar Chart Placeholder]</div>
+                </div>
+            </div>
+            <hr />
+            <div class="card center col-xs-12">
+                <h3>Lieblingsorte in Lautern</h3>
+            </div>
+
+            <div class="row">
+                <div class="col-xs-8">
+                    <div class="chart-placeholder">[Bar Chart Placeholder]</div>
+                </div>
+                <div class="col-xs-4">
+                    <div class="chart-placeholder">[Bar Chart Placeholder]</div>
+                </div>
+            </div>
+        </main>
+        <footer style="margin-bottom: .5rem;">
+            Visualisierung @ RPTU
+        </footer>
+    </div>
+  </body>
+</html>
