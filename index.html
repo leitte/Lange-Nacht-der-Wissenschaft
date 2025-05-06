@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script defer src="js/mosaic.js"></script> <!-- Defer = wait until DOM is ready -->
+    <script defer src="js/liquids.js"></script>
     <title>Sehen und Verstehen</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
@@ -108,7 +109,12 @@
                 </div>
                 <div class="card center col-xs-4">
                     <h3>Wir trinken am liebsten</h3>
-                    <div class="chart-placeholder">[Bar Chart Placeholder]</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; justify-items: center; align-items: center;">
+                        <svg id="coffee-gauge" width="180" height="180"></svg>
+                        <svg id="tea-gauge" width="180" height="180"></svg>
+                        <svg id="juice-gauge" width="180" height="180"></svg>
+                        <svg id="energy-gauge" width="180" height="180"></svg>
+                    </div>
                 </div>
             </div>
             <hr />
