@@ -353,9 +353,8 @@ document.addEventListener("DOMContentLoaded", function () {
         config_juice.waveOffset = 0.5;
         config_juice.waveAnimateTime = 1700;
         config_juice.waveTextColor = "#333333";
-
-    var gauge_coffee = loadLiquidFillGauge("coffee-gauge", 75, config_coffee, "Kaffee");
-    var gauge_tea = loadLiquidFillGauge("tea-gauge", 75, config_tea, "Tee");
-    var gauge_energy = loadLiquidFillGauge("energy-gauge", 75, config_energy, "Energy Drink");
-    var gauge_juice = loadLiquidFillGauge("juice-gauge", 75, config_juice, "Saft");
+        var gauge_coffee = loadLiquidFillGauge("coffee-gauge", Math.floor(Math.random() * 101), config_coffee, "Kaffee");
+        var gauge_tea = loadLiquidFillGauge("tea-gauge", Math.floor(Math.random() * 101), config_tea, "Tee");
+        var gauge_energy = loadLiquidFillGauge("energy-gauge", Math.floor(Math.random() * 101), config_energy, "Energy Drink");
+        var gauge_juice = loadLiquidFillGauge("juice-gauge", Math.floor(Math.random() * 101), config_juice, "Saft");
 });
