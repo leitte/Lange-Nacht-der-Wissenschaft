@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const svg = d3.select("#mosaic-plot"),
           width = +svg.attr("width"),
           height = +svg.attr("height"),
-          margin = {top: 30, right: 110, bottom: 40, left: 2};
+          margin = {top: 2, right: 110, bottom: 60, left: 2};
   
     const fontSize = 16;
     const plotWidth = width - margin.left - margin.right;
@@ -74,8 +74,8 @@ document.addEventListener("DOMContentLoaded", function () {
                 .attr("width", colWidth)
                 .attr("height", h)
                 .attr("fill", color(d.type))
-                .attr("stroke", "#333")
-                .attr("stroke-width", 0.5);
+                .attr("stroke", "#fff")
+                .attr("stroke-width", 2.5);
   
         // Inside % label
         const percent = (d.count / total) * 100;
@@ -95,21 +95,22 @@ document.addEventListener("DOMContentLoaded", function () {
   
       // Column % total on top
       const placePercent = (place.total / total) * 100;
-      plotGroup.append("text")
-               .attr("x", xStart + colWidth / 2)
-               .attr("y", -10)
-               .attr("text-anchor", "middle")
-               .attr("font-size", "16px")
-               .attr("fill", "#333")
-               .text(`${emojiMap[place.place] || ""} ${placePercent.toFixed(0)}%`);
-  
-      // X label below
-      plotGroup.append("text")
-               .attr("x", xStart + colWidth / 2)
-               .attr("y", plotHeight + 20)
-               .attr("text-anchor", "middle")
-               .attr("font-size", "16px")
-               .text(`${place.place}`);
+      // X-axis label with emoji + % on second line
+    plotGroup.append("text")
+        .attr("x", xStart + colWidth / 2)
+        .attr("y", plotHeight + 20)
+        .attr("text-anchor", "middle")
+        .attr("font-size", "16px")
+        .selectAll("tspan")
+        .data([
+        `${place.place}`,
+        `${emojiMap[place.place] || ""} ${placePercent.toFixed(0)}%`
+        ])
+        .join("tspan")
+        .attr("x", xStart + colWidth / 2)
+        .attr("dy", (d, i) => i === 0 ? 0 : "1.2em")
+        .text(d => d);
+
   
       xOffset += place.total;
     });
