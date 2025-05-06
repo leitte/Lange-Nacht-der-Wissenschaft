@@ -2,93 +2,107 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="color-scheme" content="light dark">
-    <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css" />
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css"
-        type="text/css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script defer src="js/mosaic.js"></script> <!-- Defer = wait until DOM is ready -->
-    <script defer src="js/liquids.js"></script>
-    <script defer src="js/countplot.js"></script> <!-- Defer = wait until DOM is ready -->
-    <script defer src="js/emojicounts.js"></script> <!-- Defer = wait until DOM is ready -->
-    <title>Sehen und Verstehen</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-    <style>
-        html,
-        body {
-            height: 100%;
-        }
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light dark">
+  <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css"
+    type="text/css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="" />
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+    integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+  <script defer src="js/mosaic.js"></script> <!-- Defer = wait until DOM is ready -->
+  <script defer src="js/liquids.js"></script> <!-- Defer = wait until DOM is ready -->
+  <script defer src="js/countplot.js"></script> <!-- Defer = wait until DOM is ready -->
+  <script defer src="js/emojicounts.js"></script> <!-- Defer = wait until DOM is ready -->
+  <script defer src="js/map.js"></script> <!-- Defer = wait until DOM is ready -->
+  <title>Sehen und Verstehen</title>
+  <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+  <style>
+    html,
+    body {
+      height: 100%;
+      background-color: white;
+    }
 
-        footer {
-            background-color: #999;
-            color: white;
-            text-align: right;
-            padding-right: 1rem;
-        }
+    footer {
+      background-color: #999;
+      color: white;
+      text-align: right;
+      padding-right: 1rem;
+    }
 
-        .page {
-            display: flex;
-            flex-direction: column;
-            min-height: 100vh;
-            /* full viewport height */
-        }
+    .page {
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
 
-        main {
-            flex: 1;
-            /* takes up all remaining space */
-        }
+    main {
+      flex: 1;
+    }
 
-        h1 {
-            --pico-font-family: Pacifico, cursive;
-            --pico-font-weight: 400;
-            --pico-typography-spacing-vertical: 0.75rem;
-            font-size: 50px;
-        }
+    h1 {
+      --pico-font-family: Pacifico, cursive;
+      --pico-font-weight: 400;
+      --pico-typography-spacing-vertical: 0.75rem;
+      font-size: 50px;
+    }
 
-        .card.center {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
+    .flex-column {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+    }
 
-        .card.metric h4 {
-            margin-bottom: 0.2rem;
-            /* reduce space below heading */
-        }
+    .card.center {
+      align-items: center;
+      text-align: center;
+    }
 
-        .card.metric h2 {
-            margin-bottom: 0.2rem;
-            /* reduce space below heading */
-        }
+    .card.metric h4 {
+      margin-bottom: 0.2rem;
+    }
 
-        .card.metric .emoji-icon {
-            font-size: 2rem;
-            line-height: 1;
-            margin-bottom: 0.rem;
-        }
+    .card.metric h2 {
+      margin-bottom: 0.2rem;
+    }
 
-        .card h3 {
-            font-weight: 200;
-            color: #333;
-            margin-bottom: .5rem;
-        }
+    .card.metric .emoji-icon {
+      font-size: 2rem;
+      line-height: 1;
+      margin-bottom: 0.rem;
+    }
 
-        .chart-placeholder {
-            background: #e4e4e4;
-            height: 340px;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 0.9rem;
-            color: #666;
-        }
-    </style>
+    .card h3 {
+      font-weight: 200;
+      color: #333;
+      margin-bottom: .5rem;
+    }
+
+    .chart-placeholder {
+      background: #e4e4e4;
+      height: 340px;
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      color: #666;
+    }
+
+    .border-right {
+      border-right: 1px solid #e0e0e0;
+    }
+
+    #map {
+      height: 450px;
+      width: 100%;
+    }
+  </style>
 </head>
 
 <body>
@@ -98,22 +112,22 @@
                 <h1 class="title">Sehen und Verstehen</h1>
                 <div class="subtitle" style="color: #8d8d8d;">Erlebe wie Daten lebendig werden.</div>
             </div>
-            <div class="card center  metric col-xs-2">
+            <div class="card flex-column center  metric col-xs-2">
                 <div class="emoji-icon">🕒</div>
                 <h4>Aktivität</h3>
                     <svg id="countplot" width="250" height="50"></svg>
             </div>
-            <div class="card center metric col-xs-2">
+            <div class="card flex-column center metric col-xs-2">
                 <i class="fas fa-user fa-2x" style="color: #333;"></i>
                 <h4>Teilnehmer</h3>
-                    <h2>39</h2>
+                <h2 id="kpi-total">39</h2>
             </div>
-            <div class="card center metric col-xs-2">
+            <div class="card flex-column center metric col-xs-2">
                 <div class="emoji-icon">🫶</div>
                 <h4>💛-Emoji</h3>
                     <h2>12</h2>
             </div>
-            <div class="card center metric col-xs-2">
+            <div class="card flex-column center metric col-xs-2">
                 <i class="fas fa-location-dot fa-2x" style="color: #333;"></i>
                 <h4>Monte Mare</h3>
                     <h2>42</h2>
@@ -122,16 +136,16 @@
         <hr />
         <main>
             <div class="row">
-                <div class="card col-xs-4">
+                <div class="card flex-column col-xs-4 border-right">
                     <h3>Welcher Urlaub darf es sein?</h3>
                     <!-- <div class="chart-placeholder">[Bar Chart Placeholder]</div> -->
                     <svg id="mosaic-plot" width="450" height="350"></svg>
                 </div>
-                <div class="card center col-xs-4">
+                <div class="card flex-column center col-xs-4 border-right">
                     <h3>Unsere Emoji Charts</h3>
                     <svg id="emoji-countplot" width="450" height="350"></svg>
                 </div>
-                <div class="card center col-xs-4">
+                <div class="card flex-column center col-xs-4">
                     <h3>Wir trinken am liebsten</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; justify-items: center; align-items: center;">
                         <svg id="coffee-gauge" width="180" height="180"></svg>
@@ -146,19 +160,19 @@
                 <h3>Lieblingsorte in Lautern</h3>
             </div>
 
-            <div class="row">
-                <div class="col-xs-8">
-                    <div class="chart-placeholder">[Bar Chart Placeholder]</div>
-                </div>
-                <div class="col-xs-4">
-                    <div class="chart-placeholder">[Bar Chart Placeholder]</div>
-                </div>
-            </div>
-        </main>
-        <footer style="margin-bottom: .5rem;">
-            Visualisierung @ RPTU
-        </footer>
-    </div>
+      <div class="row">
+        <div class="col-xs-8">
+          <div id="map">Map Placeholder</div>
+        </div>
+        <div class="col-xs-4">
+          <div class="chart-placeholder">[Bar Chart Placeholder]</div>
+        </div>
+      </div>
+    </main>
+    <footer style="margin-bottom: .5rem;">
+      Datenvisualisierung @ RPTU
+    </footer>
+  </div>
 </body>
 
 </html>
