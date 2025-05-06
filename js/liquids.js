@@ -348,8 +348,10 @@ document.addEventListener("DOMContentLoaded", function () {
         config_tea.waveTextColor = "#333333";
     var config_energy = liquidFillGaugeDefaultSettings();
         config_energy.waveColor = "#217c29";
+        config_energy.waveColor = "#90EE90";
     var config_juice = liquidFillGaugeDefaultSettings();
         config_juice.waveColor = "#d56b24";
+        config_juice.waveColor = "#FFD700";
         config_juice.waveOffset = 0.5;
         config_juice.waveAnimateTime = 1700;
         config_juice.waveTextColor = "#333333";

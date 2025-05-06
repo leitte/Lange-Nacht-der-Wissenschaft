@@ -14,7 +14,7 @@
   <script src="https://d3js.org/d3.v7.min.js"></script>
 
   <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 
   <!-- Include two files below for dynamic updates + set url in dataloader -->
   <!-- <script src="js/dataloader.js"></script>
@@ -103,6 +103,10 @@
       color: #666;
     }
 
+    .flex-column h3 {
+        margin-bottom: 20px;
+    }
+
     .border-right {
       border-right: 1px solid #e0e0e0;
     }
@@ -151,16 +155,16 @@
                     <svg id="mosaic-plot" width="450" height="350"></svg>
                 </div>
                 <div class="card flex-column center col-xs-4 border-right">
-                    <h3>Unsere Emoji Charts</h3>
+                    <h3>Unsere Emoji Top 10</h3>
                     <svg id="emoji-countplot" width="450" height="350"></svg>
                 </div>
                 <div class="card flex-column center col-xs-4">
                     <h3>Wir trinken am liebsten</h3>
                     <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; justify-items: center; align-items: center;">
-                        <svg id="coffee-gauge" width="180" height="180"></svg>
-                        <svg id="tea-gauge" width="180" height="180"></svg>
-                        <svg id="juice-gauge" width="180" height="180"></svg>
-                        <svg id="energy-gauge" width="180" height="180"></svg>
+                        <svg id="coffee-gauge" width="180" height="160"></svg>
+                        <svg id="tea-gauge" width="180" height="160"></svg>
+                        <svg id="juice-gauge" width="180" height="160"></svg>
+                        <svg id="energy-gauge" width="180" height="160"></svg>
                     </div>
                 </div>
             </div>

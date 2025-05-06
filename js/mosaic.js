@@ -1,23 +1,62 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const data = [
-        { place: "beach", type: "relaxed", count: 30 },
-        { place: "beach", type: "active", count: 10 },
-        { place: "beach", type: "culture", count: 5 },
-        { place: "mountains", type: "relaxed", count: 5 },
-        { place: "mountains", type: "active", count: 20 },
-        { place: "mountains", type: "culture", count: 10 },
-        { place: "city", type: "relaxed", count: 10 },
-        { place: "city", type: "active", count: 5 },
-        { place: "city", type: "culture", count: 25 },
-        { place: "at home", type: "relaxed", count: 15 },
-        { place: "at home", type: "active", count: 5 },
-        { place: "at home", type: "culture", count: 5 },
-    ];
+    if (typeof DashboardData !== "undefined" && DashboardData.subscribe) {
+        // Use live data
+        DashboardData.subscribe(updateMosaicPlotWithSurveyData);
+    } else {
+        const data = [
+            { place: "Strände", type: "Wellness", count: 30 },
+            { place: "Strände", type: "Abenteuer", count: 10 },
+            { place: "Strände", type: "Kultur", count: 5 },
+            { place: "Berge", type: "Wellness", count: 5 },
+            { place: "Berge", type: "Abenteuer", count: 20 },
+            { place: "Berge", type: "Kultur", count: 10 },
+            { place: "Städte", type: "Wellness", count: 10 },
+            { place: "Städte", type: "Abenteuer", count: 5 },
+            { place: "Städte", type: "Kultur", count: 25 },
+            { place: "Balkonien", type: "Wellness", count: 15 },
+            { place: "Balkonien", type: "Abenteuer", count: 5 },
+            { place: "Balkonien", type: "Kultur", count: 5 },
+        ];
 
+        renderMosaicPlot(data);
+    }
+});
+
+function updateMosaicPlotWithSurveyData(data) {
+    const counts = {};
+
+    data.forEach(row => {
+        const place = row["Lieblings Urlaubsort?"]?.trim();
+        const type = row["Lieblings Urlaubsaktivität?"]?.trim();
+
+        if (place && type) {
+            const key = `${place}|${type}`;
+            counts[key] = (counts[key] || 0) + 1;
+        }
+    });
+
+    const formattedData = Object.entries(counts).map(([key, count]) => {
+        const [place, type] = key.split("|");
+        return { place, type, count };
+    });
+
+    formattedData.sort((a, b) => {
+        if (a.place === b.place) {
+            return a.type.localeCompare(b.type);
+        }
+        return a.place.localeCompare(b.place);
+    });
+
+    renderMosaicPlot(formattedData)
+}
+
+function renderMosaicPlot(data) {
     const svg = d3.select("#mosaic-plot"),
         width = +svg.attr("width"),
         height = +svg.attr("height"),
-        margin = { top: 2, right: 110, bottom: 60, left: 2 };
+        margin = { top: 2, right: 90, bottom: 40, left: 20 };
+
+    svg.selectAll("*").remove();
 
     const fontSize = 16;
     const plotWidth = width - margin.left - margin.right;
@@ -37,8 +76,8 @@ document.addEventListener("DOMContentLoaded", function () {
         .range([0, plotWidth]);
 
     const color = d3.scaleOrdinal()
-        .domain(["relaxed", "active", "culture"])
-        .range(["#87CEFA", "#90EE90", "#FFD700"]);
+        .domain(["Wellness", "Abenteuer", "Kultur", "Shopping"])
+        .range(["#87CEFA", "#90EE90", "#FFD700", "#FFB6C1"]);
 
     const plotGroup = svg.append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -47,10 +86,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Emoji mapping
     const emojiMap = {
-        "beach": "🏖️",
-        "mountains": "🏔️",
-        "city": "🏙️",
-        "at home": "🏡"
+        "Strände": "🏖️",
+        "Berge": "🏔️",
+        "Städte": "🏙️",
+        "Balkonien": "🏡"
     };
 
     placeTotals.forEach(place => {
@@ -137,10 +176,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         const typeTotal = typeTotals.get(d.type);
         const typePercent = (typeTotal / total) * 100;
-        const labelText = `${d.type} (${typePercent.toFixed(0)}%)`;
 
-        const labelWidth = 100;
-        const labelHeight = fontSize + 4;
+        const labelWidth = 80;
+        const labelHeight = 2 * fontSize + 4;
 
         // Background box
         svg.append("rect")
@@ -153,15 +191,30 @@ document.addEventListener("DOMContentLoaded", function () {
             .attr("rx", 3);
 
         // Label text
-        svg.append("text")
+        // Multiline label using <tspan>
+        const lineHeightEm = 1.2;  // line spacing in em units
+        const verticalOffset = fontSize * (lineHeightEm ); // ~20% padding
+
+        const textGroup = svg.append("text")
             .attr("x", labelX + labelWidth / 2)
-            .attr("y", midY)
+            .attr("y", midY - verticalOffset) // Start slightly above midY to center two lines
             .attr("text-anchor", "middle")
-            .attr("dominant-baseline", "middle")
             .attr("font-size", `${fontSize}px`)
-            .attr("fill", "#000")
-            .text(labelText);
+            .attr("fill", "#000");
+
+        textGroup.append("tspan")
+            .attr("x", labelX + labelWidth / 2)
+            .attr("dy", "1em")
+            .text(d.type);
+
+        textGroup.append("tspan")
+            .attr("x", labelX + labelWidth / 2)
+            .attr("dy", "1.2em")
+            .attr("font-size", `${fontSize * 0.8}px`)
+            .text(`(${typePercent.toFixed(0)}%)`);
+
+
 
         labelYOffset += h;
     });
-});
+};

@@ -35,6 +35,8 @@ function renderChart(users) {
         height = +svg.attr("height"),
         margin = { top: 5, right: 5, bottom: 5, left: 5 };
 
+    svg.selectAll("*").remove();
+
     const plotWidth = width - margin.left - margin.right;
     const plotHeight = height - margin.top - margin.bottom;
 
