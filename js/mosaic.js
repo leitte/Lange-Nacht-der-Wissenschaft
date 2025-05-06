@@ -1,17 +1,17 @@
 document.addEventListener("DOMContentLoaded", function () {
     const data = [
-        { place: "beach", type: "relaxed", count: 30 },
-        { place: "beach", type: "active", count: 10 },
-        { place: "beach", type: "culture", count: 5 },
-        { place: "mountains", type: "relaxed", count: 5 },
-        { place: "mountains", type: "active", count: 20 },
-        { place: "mountains", type: "culture", count: 10 },
-        { place: "city", type: "relaxed", count: 10 },
-        { place: "city", type: "active", count: 5 },
-        { place: "city", type: "culture", count: 25 },
-        { place: "at home", type: "relaxed", count: 15 },
-        { place: "at home", type: "active", count: 5 },
-        { place: "at home", type: "culture", count: 5 },
+        { place: "Strand", type: "Entspannen", count: 30 },
+        { place: "Strand", type: "Aktiv", count: 10 },
+        { place: "Strand", type: "Kultur", count: 5 },
+        { place: "Berge", type: "Entspannen", count: 5 },
+        { place: "Berge", type: "Aktiv", count: 20 },
+        { place: "Berge", type: "Kultur", count: 10 },
+        { place: "Stadt", type: "Entspannen", count: 10 },
+        { place: "Stadt", type: "Aktiv", count: 5 },
+        { place: "Stadt", type: "Kultur", count: 25 },
+        { place: "Zuhause", type: "Entspannen", count: 15 },
+        { place: "Zuhause", type: "Aktiv", count: 5 },
+        { place: "Zuhause", type: "Kultur", count: 5 },
     ];
 
     const svg = d3.select("#mosaic-plot"),
@@ -37,7 +37,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .range([0, plotWidth]);
 
     const color = d3.scaleOrdinal()
-        .domain(["relaxed", "active", "culture"])
+        .domain(["Entspannen", "Aktiv", "Kultur"])
         .range(["#87CEFA", "#90EE90", "#FFD700"]);
 
     const plotGroup = svg.append("g")
@@ -47,10 +47,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
     // Emoji mapping
     const emojiMap = {
-        "beach": "🏖️",
-        "mountains": "🏔️",
-        "city": "🏙️",
-        "at home": "🏡"
+        "Strand": "🏖️",
+        "Berge": "🏔️",
+        "Stadt": "🏙️",
+        "Zuhause": "🏡"
     };
 
     placeTotals.forEach(place => {
