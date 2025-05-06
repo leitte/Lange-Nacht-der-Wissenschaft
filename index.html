@@ -7,7 +7,9 @@
     <link rel="stylesheet" href="https://unpkg.com/@picocss/pico@latest/css/pico.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/flexboxgrid/6.3.1/flexboxgrid.min.css" type="text/css" >
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    <title>Hello world!</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script defer src="js/mosaic.js"></script> <!-- Defer = wait until DOM is ready -->
+    <title>Sehen und Verstehen</title>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
         html, body {
@@ -97,7 +99,8 @@
             <div class="row">
                 <div class="card center col-xs-4">
                     <h3>Welcher Urlaub darf es sein?</h3>
-                    <div class="chart-placeholder">[Bar Chart Placeholder]</div>
+                    <!-- <div class="chart-placeholder">[Bar Chart Placeholder]</div> -->
+                    <svg id="mosaic-plot" width="450" height="360"></svg>
                 </div>
                 <div class="card center col-xs-4">
                     <h3>Unsere Emoji Charts</h3>
