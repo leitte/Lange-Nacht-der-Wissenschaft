@@ -22,7 +22,7 @@ const DashboardData = {
         })
         .catch(err => console.error("Error loading CSV data:", err));
     },
-    startPolling(intervalMs = 6000) { // default: 60 seconds
+    startPolling(intervalMs = 30000) { // default: 30 seconds
       this.fetchData(); // initial load
       console.log('loaded data')
       setInterval(() => this.fetchData(), intervalMs);
