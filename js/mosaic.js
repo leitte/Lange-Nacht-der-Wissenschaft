@@ -54,7 +54,7 @@ function renderMosaicPlot(data) {
     const svg = d3.select("#mosaic-plot"),
         width = +svg.attr("width"),
         height = +svg.attr("height"),
-        margin = { top: 2, right: 90, bottom: 40, left: 20 };
+        margin = { top: 2, right: 100, bottom: 40, left: 10 };
 
     svg.selectAll("*").remove();
 

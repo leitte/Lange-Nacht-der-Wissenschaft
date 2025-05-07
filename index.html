@@ -19,7 +19,7 @@
   <!-- Include two files below for dynamic updates + set url in dataloader -->
   <!-- <script src="js/dataloader.js"></script>
   <script src="js/kpiupdates.js"></script> -->
-  
+
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
 
@@ -36,6 +36,12 @@
     body {
       height: 100%;
       background-color: white;
+    }
+
+    @media (min-width: 1536px) {
+      .container {
+        max-width: 1536px;
+      }
     }
 
     footer {
@@ -105,7 +111,7 @@
     }
 
     .flex-column h3 {
-        margin-bottom: 20px;
+      margin-bottom: 20px;
     }
 
     .border-right {
@@ -114,71 +120,73 @@
 
     #map {
       height: 450px;
-      width: 100%;
+      width: 98%;
+      margin: auto;
     }
   </style>
 </head>
 
 <body>
-    <div class="page container">
-        <header class="row" style="align-items: flex-end; margin-top: 1rem;">
-            <div class="card col-xs-4">
-                <h1 class="title">Sehen und Verstehen</h1>
-                <div class="subtitle" style="color: #8d8d8d;">Erlebe, wie Daten lebendig werden.</div>
-            </div>
-            <div class="card flex-column center  metric col-xs-2">
-                <div class="emoji-icon">🕒</div>
-                <h4>Aktivität</h3>
-                    <svg id="countplot" width="250" height="50"></svg>
-            </div>
-            <div class="card flex-column center metric col-xs-2">
-                <i class="fas fa-user fa-2x" style="color: #333;"></i>
-                <h4>Teilnehmer</h3>
-                <h2 id="kpi-total">39</h2>
-            </div>
-            <div class="card flex-column center metric col-xs-2">
-                <div class="emoji-icon" id="kpi-emoji">🫶</div>
-                <h4>💛-Emoji</h3>
-                <h2 id="kpi-emoji-count">12</h2>
-            </div>
-            <div class="card flex-column center metric col-xs-2">
-                <i class="fas fa-location-dot fa-2x" style="color: #333;"></i>
-                <h4 id="kpi-location">Monte Mare</h3>
-                    <h2 id="kpi-location-count">42</h2>
-            </div>
-        </header>
-        <hr />
-        <main>
-            <div class="row">
-                <div class="card flex-column center col-xs-4 border-right">
-                    <h3>Welcher Urlaub darf es sein?</h3>
-                    <svg id="mosaic-plot" width="450" height="350"></svg>
-                </div>
-                <div class="card flex-column center col-xs-4 border-right">
-                    <h3>Unsere Emoji Top 10</h3>
-                    <svg id="emoji-countplot" width="450" height="350"></svg>
-                </div>
-                <div class="card flex-column center col-xs-4">
-                    <h3>Wir trinken am liebsten</h3>
-                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; justify-items: center; align-items: center;">
-                        <svg id="coffee-gauge" width="180" height="160"></svg>
-                        <svg id="tea-gauge" width="180" height="160"></svg>
-                        <svg id="juice-gauge" width="180" height="160"></svg>
-                        <svg id="energy-gauge" width="180" height="160"></svg>
-                    </div>
-                </div>
-            </div>
-            <hr />
-            <div class="card center col-xs-12">
-                <h3>Hier trifft sich Kaiserslautern</h3>
-            </div>
+  <div class="page container">
+    <header class="row" style="align-items: flex-end; margin-top: 1rem;">
+      <div class="card col-xs-4">
+        <h1 class="title">Sehen und Verstehen</h1>
+        <div class="subtitle" style="color: #8d8d8d;">Erlebe, wie Daten lebendig werden.</div>
+      </div>
+      <div class="card flex-column center  metric col-xs-2">
+        <div class="emoji-icon">🕒</div>
+        <h4>Aktivität</h3>
+          <svg id="countplot" width="250" height="50"></svg>
+      </div>
+      <div class="card flex-column center metric col-xs-2">
+        <i class="fas fa-user fa-2x" style="color: #333;"></i>
+        <h4>Teilnehmer</h3>
+          <h2 id="kpi-total">39</h2>
+      </div>
+      <div class="card flex-column center metric col-xs-2">
+        <div class="emoji-icon" id="kpi-emoji">🫶</div>
+        <h4>💛-Emoji</h3>
+          <h2 id="kpi-emoji-count">12</h2>
+      </div>
+      <div class="card flex-column center metric col-xs-2">
+        <i class="fas fa-location-dot fa-2x" style="color: #333;"></i>
+        <h4 id="kpi-location">Monte Mare</h3>
+          <h2 id="kpi-location-count">42</h2>
+      </div>
+    </header>
+    <hr />
+    <main>
+      <div class="row">
+        <div class="card flex-column center col-xs-4 border-right">
+          <h3>Welcher Urlaub darf es sein?</h3>
+          <svg id="mosaic-plot" width="500" height="350"></svg>
+        </div>
+        <div class="card flex-column center col-xs-4 border-right">
+          <h3>Unsere Emoji Top 10</h3>
+          <svg id="emoji-countplot" width="500" height="350"></svg>
+        </div>
+        <div class="card flex-column center col-xs-4">
+          <h3>Wir trinken am liebsten</h3>
+          <div
+            style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; justify-items: center; align-items: center;">
+            <svg id="coffee-gauge" width="180" height="160"></svg>
+            <svg id="tea-gauge" width="180" height="160"></svg>
+            <svg id="juice-gauge" width="180" height="160"></svg>
+            <svg id="energy-gauge" width="180" height="160"></svg>
+          </div>
+        </div>
+      </div>
+      <hr />
+      <div class="card center col-xs-12">
+        <h3>Hier trifft sich Kaiserslautern</h3>
+      </div>
 
       <div class="row">
         <div class="col-xs-8">
           <div id="map"></div>
         </div>
         <div class="col-xs-4">
-          <svg id="location-countplot" width="450" height="450"></svg>
+          <svg id="location-countplot" width="500" height="450"></svg>
         </div>
       </div>
     </main>

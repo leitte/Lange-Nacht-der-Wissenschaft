@@ -72,7 +72,7 @@ function drawBars(data) {
   const svg = d3.select("#location-countplot"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
-    margin = { top: 0, right: 30, bottom: 15, left: 30 };
+    margin = { top: 0, right: 20, bottom: 15, left: 10 };
 
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;

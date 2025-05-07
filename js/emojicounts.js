@@ -87,7 +87,7 @@ function drawLollis(data) {
   const svg = d3.select("#emoji-countplot"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
-    margin = { top: 32, right: 35, bottom: 37, left: 0 };
+    margin = { top: 32, right: 40, bottom: 37, left: 5 };
 
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
