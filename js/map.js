@@ -63,7 +63,8 @@ function drawMap() {
         html: `
               <svg width="${donutSize}" height="${donutSize}" viewBox="0 0 38 38" xmlns="http://www.w3.org/2000/svg" style="border: none; transform: translate(${shift[0]}px, ${shift[1]}px);">
                   <circle cx="19" cy="19" r="14.9155" fill="transparent" stroke="#fff" stroke-width="6.5"></circle>
-                  <circle cx="19" cy="19" r="14.9155" fill="transparent" stroke="#87cefa" stroke-width="7" stroke-dasharray="${dashArray}" stroke-dashoffset="30"></circle>
+                  <circle cx="19" cy="19" r="18.3" fill="transparent" stroke="#DCDBDC" stroke-width="0.5"></circle>
+                  <circle cx="19" cy="19" r="14.9155" fill="transparent" stroke="#9ed5e8" stroke-width="7" stroke-dasharray="${dashArray}" stroke-dashoffset="30"></circle>
               </svg>
           `,
         iconSize: [donutSize, donutSize],

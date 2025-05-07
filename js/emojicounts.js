@@ -63,7 +63,7 @@ document.addEventListener("DOMContentLoaded", function () {
   const svg = d3.select("#emoji-countplot"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
-    margin = { top: 50, right: 30, bottom: 10, left: 0 };
+    margin = { top: 32, right: 35, bottom: 37, left: 0 };
 
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
@@ -81,29 +81,13 @@ document.addEventListener("DOMContentLoaded", function () {
   const g = svg.append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
-  // // 6. Bars
-  // g.selectAll("rect")
-  //   .data(countArray)
-  //   .join("rect")
-  //   .attr("x", d => x(d.emoji))
-  //   .attr("y", d => y(d.count))
-  //   .attr("width", x.bandwidth())
-  //   .attr("height", d => plotHeight - y(d.count))
-  //   .attr("fill", "#87CEFA");
-
   // 6.1 Lollipop stems (lines)
   g.selectAll("line.stem")
     .data(countArray)
     .join("line")
     .attr("class", "stem")
-    .attr("x1", (d, i) => {
-      const baseX = x(d.emoji) + x.bandwidth() / 2;
-      return i === countArray.length - 1 ? baseX + 15 : baseX; // Add offset for the last stem
-    })
-    .attr("x2", (d, i) => {
-      const baseX = x(d.emoji) + x.bandwidth() / 2;
-      return i === countArray.length - 1 ? baseX + 15 : baseX; // Add offset for the last stem
-    })
+    .attr("x1", d => x(d.emoji) + x.bandwidth() / 2)
+    .attr("x2", d => x(d.emoji) + x.bandwidth() / 2)
     .attr("y1", y(0)) // Start at the bottom (y = 0)
     .attr("y2", d => y(d.count)) // End at the count value
     .attr("stroke", (d, i) => {
@@ -113,8 +97,8 @@ document.addEventListener("DOMContentLoaded", function () {
       return "#E0E0E0"; // Default color for other stems
     })
     .attr("stroke-width", (d, i) => {
-      if (i < 3) return 12; 
-      if (i === 9) return 15;
+      if (i < 3) return 10;
+      if (i === 10) return 12;
       return 8; // Default size for other stems
     }); // Line thickness
 
@@ -123,10 +107,7 @@ document.addEventListener("DOMContentLoaded", function () {
     .data(countArray)
     .join("circle")
     .attr("class", "lollipop")
-    .attr("cx", (d, i) => {
-      const baseX = x(d.emoji) + x.bandwidth() / 2;
-      return i === countArray.length - 1 ? baseX + 15 : baseX; // Add offset for the last circle
-    })
+    .attr("cx", d => x(d.emoji) + x.bandwidth() / 2)
     .attr("cy", (d, i) => (i === countArray.length - 1 ? y(d.count) - 3 : y(d.count) - 10)) // Position at the count value
     .attr("r", (d, i) => (i === countArray.length - 1 ? 35 : 18)) // Radius of the circle
     .attr("fill", "white") // Transparent fill
@@ -137,23 +118,12 @@ document.addEventListener("DOMContentLoaded", function () {
       return "#abd9ec"; // Default color for other stems
     })
     .attr("stroke-width", (d, i) => {
-      if (i === 9) return 9;
+      if (i === 10) return 9;
       return 6;
     }); // Border thickness
 
-  // 7. Grid lines in front
+  // 7. Y-axis ticks
   const yTicks = y.ticks(4);
-  // g.selectAll("line.grid")
-  //   .data(yTicks)
-  //   .join("line")
-  //   .attr("x1", 0)
-  //   .attr("x2", plotWidth)
-  //   .attr("y1", d => y(d))
-  //   .attr("y2", d => y(d))
-  //   .attr("stroke", "white")
-  //   .attr("stroke-width", 1)
-  //   .attr("stroke-dasharray", "2,2");
-
   g.selectAll("text.grid-label")
     .data(yTicks)
     .join("text")
@@ -169,11 +139,11 @@ document.addEventListener("DOMContentLoaded", function () {
     const centerX = x(d.emoji) + x.bandwidth() / 2;
 
     if (d.emoji === "Other" && d.stackedEmojis) {
-      const centerX = x(d.emoji) + x.bandwidth() / 2 + 15; // Center of the lollipop
+      const centerX = x(d.emoji) + x.bandwidth() / 2; // Center of the lollipop
       const centerY = y(d.count); // Center of the circle
       const radius = 35; // Radius of the big circle
       const emojiRadius = 18; // Radius for emoji placement
-    
+
       // Calculate positions for emojis in a circular layout
       const angleStep = (2 * Math.PI) / d.stackedEmojis.length; // Angle between emojis
       const nodes = d.stackedEmojis.map((emoji, i) => ({
@@ -181,11 +151,11 @@ document.addEventListener("DOMContentLoaded", function () {
         x: Math.cos(i * angleStep) * emojiRadius, // X position
         y: Math.sin(i * angleStep) * emojiRadius  // Y position
       }));
-    
+
       // Append a group for the emojis
       const emojiGroup = g.append("g")
         .attr("transform", `translate(${centerX},${centerY})`); // Position at the center of the circle
-    
+
       // Append emojis as text elements
       emojiGroup.selectAll("text")
         .data(nodes)
@@ -200,28 +170,28 @@ document.addEventListener("DOMContentLoaded", function () {
       // For normal bars: draw single emoji above the bar
       g.append("text")
         .attr("x", centerX)
-        .attr("y", y(d.count) )
+        .attr("y", y(d.count))
         .attr("text-anchor", "middle")
         .attr("font-size", "24px")
         .text(d.emoji);
     }
   });
 
-    // 9. X-axis labels: 1–10 for top emojis, 🔥 for "Other"
-    countArray.forEach((d, i) => {
-        const centerX = x(d.emoji) + x.bandwidth() / 2;
-        const labelY = plotHeight + 20;
+  // 9. X-axis labels: 1–10 for top emojis, 🔥 for "Other"
+  countArray.forEach((d, i) => {
+    const centerX = x(d.emoji) + x.bandwidth() / 2;
+    const labelY = plotHeight + 20;
 
-        const labelText = d.emoji === "Other" ? "🔥" : (i + 1);  // number 1–10 or trending emoji
+    const labelText = d.emoji === "Other" ? "🔥" : (i + 1);  // number 1–10 or trending emoji
 
-        g.append("text")
-            .attr("x", centerX)
-            .attr("y", labelY)
-            .attr("text-anchor", "middle")
-            .attr("font-size", "16px")
-            .attr("fill", "#333")
-            .text(labelText);
-    });
+    g.append("text")
+      .attr("x", centerX)
+      .attr("y", labelY)
+      .attr("text-anchor", "middle")
+      .attr("font-size", "16px")
+      .attr("fill", "#333")
+      .text(labelText);
+  });
 
 
 });
