@@ -1,4 +1,4 @@
-const csvUrl = 'enter url here';
+const csvUrl = 'set url here';
 
 const DashboardData = {
     data: null,
@@ -22,7 +22,7 @@ const DashboardData = {
         })
         .catch(err => console.error("Error loading CSV data:", err));
     },
-    startPolling(intervalMs = 60000) { // default: 60 seconds
+    startPolling(intervalMs = 6000) { // default: 60 seconds
       this.fetchData(); // initial load
       console.log('loaded data')
       setInterval(() => this.fetchData(), intervalMs);

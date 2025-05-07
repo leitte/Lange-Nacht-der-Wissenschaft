@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", function () {
     function updateKPIs(data) {
         const validRows = data.filter(d => d.Timestamp && d.Timestamp.trim() !== "");
         const total = validRows.length;
-        console.log('total' + total)
 
         // --- 👇 New Emoji Frequency Logic ---
         const emojis = validRows

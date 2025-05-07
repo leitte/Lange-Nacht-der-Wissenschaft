@@ -1,4 +1,3 @@
-
 /*!
  * Source: "https://gist.github.com/tissera/3f0b647d4928d2960a53738ef683b0a6.js"
  * @license Open source under BSD 2-clause (http://choosealicense.com/licenses/bsd-2-clause/)
@@ -7,6 +6,55 @@
  *
  * Liquid Fill Gauge v1.1
  */
+
+document.addEventListener("DOMContentLoaded", function () {
+  function updateGauges(data) {
+      const validRows = data.filter(d => d.Timestamp && d.Timestamp.trim() !== "");
+      const total = validRows.length;
+      const drinks = validRows.map(d => d["Leckere Getränke"]);
+      var absolute = 0;
+      // Update the gauges with new values
+      ['Kaffee', 'Tee', 'Energy Drink', 'Saft'].forEach((label, index) => {
+          const gauge = [gauge_coffee, gauge_tea, gauge_energy, gauge_juice][index];
+          absolute = drinks.filter(e => e && e.includes(label)).length;
+          const value = Math.round(absolute / total * 100);
+          gauge.update(value);
+      });
+  }
+
+  // Configure the gauges
+  var config_coffee = liquidFillGaugeDefaultSettings();
+      config_coffee.waveColor = "#94550b";
+  var config_tea = liquidFillGaugeDefaultSettings();
+      config_tea.waveColor = "#B7CF9F";
+      config_tea.waveOffset = 0.5;
+      config_tea.waveAnimateTime = 1700;
+      config_tea.waveTextColor = "#333";
+  var config_energy = liquidFillGaugeDefaultSettings();
+      config_energy.waveColor = "#90EE90";
+      config_energy.waveTextColor = "#333";
+  var config_juice = liquidFillGaugeDefaultSettings();
+      config_juice.waveColor = "#f9e055";
+      config_juice.waveOffset = 0.5;
+      config_juice.waveAnimateTime = 1700;
+      config_juice.waveTextColor = "#333";
+
+  var gauge_coffee = loadLiquidFillGauge("coffee-gauge", 0, config_coffee, "Kaffee");
+  var gauge_tea = loadLiquidFillGauge("tea-gauge", 0, config_tea, "Tee");
+  var gauge_energy = loadLiquidFillGauge("energy-gauge", 0, config_energy, "Energy Drink");
+  var gauge_juice = loadLiquidFillGauge("juice-gauge", 0, config_juice, "Saft");
+  
+  if (typeof DashboardData !== "undefined" && DashboardData.subscribe) {
+      DashboardData.subscribe(updateGauges);
+  }
+  else {
+      [gauge_coffee, gauge_tea, gauge_energy, gauge_juice].forEach(gauge => {
+          gauge.update(Math.floor(Math.random() * 101));
+      }
+      );
+  }
+});
+
 function liquidFillGaugeDefaultSettings() {
     return {
         minValue: 0, // The gauge minimum value.
@@ -336,54 +384,3 @@ function loadLiquidFillGauge(elementId, value, config, label) {
 
     return new GaugeUpdater();
 }
-
-
-document.addEventListener("DOMContentLoaded", function () {
-    function updateGauges(data) {
-        const validRows = data.filter(d => d.Timestamp && d.Timestamp.trim() !== "");
-        const total = validRows.length;
-        const drinks = validRows.map(d => d["Leckere Getränke"]);
-        var absolute = 0;
-        // Update the gauges with new values
-        ['Kaffee', 'Tee', 'Energy Drink', 'Saft'].forEach((label, index) => {
-            const gauge = [gauge_coffee, gauge_tea, gauge_energy, gauge_juice][index];
-            absolute = drinks.filter(e => e && e.includes(label)).length;
-            const value = Math.round(absolute / total * 100);
-            gauge.update(value);
-        });
-    }
-
-    // Configure the gauges
-    var config_coffee = liquidFillGaugeDefaultSettings();
-        config_coffee.waveColor = "#94550b";
-    var config_tea = liquidFillGaugeDefaultSettings();
-        config_tea.waveColor = "#a1a270";
-        config_tea.waveColor = "#B7CF9F";
-        config_tea.waveOffset = 0.5;
-        config_tea.waveAnimateTime = 1700;
-        config_tea.waveTextColor = "#333333";
-    var config_energy = liquidFillGaugeDefaultSettings();
-        config_energy.waveColor = "#217c29";
-        config_energy.waveColor = "#90EE90";
-    var config_juice = liquidFillGaugeDefaultSettings();
-        config_juice.waveColor = "#d56b24";
-        config_juice.waveColor = "#f9e055";
-        config_juice.waveOffset = 0.5;
-        config_juice.waveAnimateTime = 1700;
-        config_juice.waveTextColor = "#333333";
-
-    var gauge_coffee = loadLiquidFillGauge("coffee-gauge", 0, config_coffee, "Kaffee");
-    var gauge_tea = loadLiquidFillGauge("tea-gauge", 0, config_tea, "Tee");
-    var gauge_energy = loadLiquidFillGauge("energy-gauge", 0, config_energy, "Energy Drink");
-    var gauge_juice = loadLiquidFillGauge("juice-gauge", 0, config_juice, "Saft");
-    
-    if (typeof DashboardData !== "undefined" && DashboardData.subscribe) {
-        DashboardData.subscribe(updateGauges);
-    }
-    else {
-        [gauge_coffee, gauge_tea, gauge_energy, gauge_juice].forEach(gauge => {
-            gauge.update(Math.floor(Math.random() * 101));
-        }
-        );
-    }
-});

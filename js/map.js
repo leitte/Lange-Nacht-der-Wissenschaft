@@ -1,12 +1,64 @@
-function drawMap() {
-  var map = L.map('map', { attributionControl: false, zoomControl: false }).setView([49.438, 7.757], 13);
+document.addEventListener("DOMContentLoaded", function () {
+  if (typeof DashboardData !== "undefined" && DashboardData.subscribe) {
+    // Use live data
+    DashboardData.subscribe(updateMapWithSurveyData);
+  } else {
+    // Dummy data for placeCounts
+    const data = {
+      "Universität": 50,
+      "Bremerhof": 30,
+      "Humbergturm": 20,
+      "IKEA": 40,
+      "Monte Mare": 25,
+      "Gartenschau": 35,
+      "Betze": 45,
+      "Kammgarn": 15,
+      "Pfalztheater": 10,
+      "42kaiserslautern": 60
+    };
+    total = 80;
+    drawMap([data, total]);
+  }
+});
+
+function updateMapWithSurveyData(data) {
+  const counts = {};
+  var total = 0;
+  // Loop through the data and count the occurrences of each place
+  data.forEach(row => {
+    const places = row["Welche Orte in Kaiserslautern hast du schon besucht?"].trim().split(", ");
+
+    if (places[0] != "") {
+      total += 1;
+      places.forEach(place => {
+        const key = `${place}`;
+        counts[key] = (counts[key] || 0) + 1;
+      })
+    }
+  });
+
+  drawMap([counts, total]);
+}
+
+function drawMap(data) {
+  const counts = data[0];
+  const total = data[1];
+  const firstdraw = Object.prototype.toString.call(map) != "[object Object]";
+
+  // Create a map instance
+  if (firstdraw) {
+    map = L.map('map', { attributionControl: false, zoomControl: false }).setView([49.438, 7.757], 13);
+  }
+
   // Create a map background
-  L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
-  // L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png').addTo(map); // bunt mit labels
-  // L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(map); // bunt ohne labels
-  // L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}', { ext: 'jpg' }).addTo(map); // satellite
-  // L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { subdomains: 'abcd' }).addTo(map); // weiß ohne labels
-  // L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png').addTo(map); // gray with labels
+  if (firstdraw) {
+    L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+    // L.tileLayer('https://{s}.tile.openstreetmap.fr/hot/{z}/{x}/{y}.png').addTo(map); // bunt mit labels
+    // L.tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png').addTo(map); // bunt ohne labels
+    // L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.{ext}', { ext: 'jpg' }).addTo(map); // satellite
+    // L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { subdomains: 'abcd' }).addTo(map); // weiß ohne labels
+    // L.tileLayer('https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png').addTo(map); // gray with labels
+  }
 
   // Define locations
   const glyphsize = 100;
@@ -24,6 +76,15 @@ function drawMap() {
     { name: "42kaiserslautern", coords: [49.440389, 7.771076], icon: "42_g2.svg", anchor: [0.05, 0.95], shift: [71, -70] }
   ];
 
+  if (!firstdraw) {
+    // Remove all markers from the map
+    map.eachLayer(function (layer) {
+      if (layer instanceof L.Marker) {
+        map.removeLayer(layer);
+      }
+    });
+  }
+
   // Add a marker for each location
   locations.forEach(({ name, coords, icon, shift, anchor }) => {
 
@@ -36,26 +97,11 @@ function drawMap() {
       })
     }).addTo(map);
 
-    // Dummy data for placeCounts
-    const placeCounts = {
-      "Universität": 50,
-      "Bremerhof": 30,
-      "Humbergturm": 20,
-      "IKEA": 40,
-      "Monte Mare": 25,
-      "Gartenschau": 35,
-      "Betze": 45,
-      "Kammgarn": 15,
-      "Pfalztheater": 10,
-      "42kaiserslautern": 60
-    };
-
     // calculate donut data
-    const count = placeCounts[name] || 0; // Get the count for the location
-    const total = 80 //dataFiltered.filter(d => d.Wo.length > 0 && !(d.Wo.length === 1 && d.Wo[0] === '')).length; // Total number of responses
+    const count = counts[name] || 0; // Get the count for the location
     const percentage = (count / total) * 100; // Calculate the percentage
     const dashArray = `${percentage} ${100 - percentage}`; // Set the stroke-dasharray
-    console.log(dashArray);
+
     // draw donut
     const donut = L.marker(coords, {
       icon: L.divIcon({
@@ -81,14 +127,6 @@ function drawMap() {
     if (donutElement) {
       donutElement.removeAttribute("role");
     }
-
-    return map;
-    // const map = L.map('map').setView([49.424011, 7.752635], 13); // Set initial coordinates and zoom level
-    // L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map); // Add a tile layer
-    // return map;
   });
 }
 
-document.addEventListener("DOMContentLoaded", function () {
-  var map = drawMap();
-});

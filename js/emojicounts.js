@@ -1,18 +1,45 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // 1. Simulate biased emoji data with timestamps
-  const commonEmojis = ["😂", "❤️", "🔥", "👍", "🎉", "😎", "😭", "💯", "🤔"];
-  const rareEmojis = ["✨", "👀", "😡", "🥺", "🙌", "🍕", "🧠", "🐱", "📈", "🫠"];
-  const favorites = Array.from({ length: 300 }, () => {
-    const isCommon = Math.random() < 0.9;
-    const pool = isCommon ? commonEmojis : rareEmojis;
-    const emoji = pool[Math.floor(Math.random() * pool.length)];
-    const timestamp = new Date(Date.now() - Math.floor(Math.random() * 60 * 60 * 1000));
-    return { emoji, timestamp };
-  });
+  if (typeof DashboardData !== "undefined" && DashboardData.subscribe) {
+    // Use live data
+    DashboardData.subscribe(updateLollisWithSurveyData);
+  } else {
+    console.log("No live data available. Using simulated data.");
+    // Simulate biased emoji data with timestamps
+    const commonEmojis = ["😂", "❤️", "🔥", "👍", "🎉", "😎", "😭", "💯", "🤔"];
+    const rareEmojis = ["✨", "👀", "😡", "🥺", "🙌", "🍕", "🧠", "🐱", "📈", "🫠"];
+    const emojiTimestampPairs = Array.from({ length: 300 }, () => {
+      const isCommon = Math.random() < 0.9;
+      const pool = isCommon ? commonEmojis : rareEmojis;
+      const emoji = pool[Math.floor(Math.random() * pool.length)];
+      const timestamp = new Date(Date.now() - Math.floor(Math.random() * 60 * 60 * 1000));
+      return { emoji, timestamp };
+    });
+
+    drawLollis(emojiTimestampPairs);
+  }
+});
+
+function updateLollisWithSurveyData(data) {
+  // Regular expression to check if a string is an emoji
+  const emojiRegex = /[\p{Emoji_Presentation}\p{Emoji}\uFE0F]/u;
+
+  // Extract an array of emoji-timestamp pairs
+  const emojiTimestampPairs = data
+    .filter(row => row["Lieblingsemoji?"] && row["Timestamp"]) // Ensure both fields exist
+    .map(row => ({
+      emoji: row["Lieblingsemoji?"],
+      timestamp: new Date(row["Timestamp"]) // Convert timestamp to a Date object
+    }))
+    .filter(pair => emojiRegex.test(pair.emoji)); // Filter out non-emoji entries
+
+  drawLollis(emojiTimestampPairs);
+}
+
+function drawLollis(data) {
 
   // 2. Count frequencies and get top emojis
   const counts = d3.rollup(
-    favorites,
+    data,
     v => v.length,
     d => d.emoji
   );
@@ -27,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function () {
   // 3. Get last 5 unique non-top emojis by timestamp
   const recentOtherEmojis = [];
   const seen = new Set();
-  favorites
+  data
     .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp))
     .forEach(d => {
       if (!topEmojiSet.has(d.emoji) && !seen.has(d.emoji)) {
@@ -35,13 +62,11 @@ document.addEventListener("DOMContentLoaded", function () {
         seen.add(d.emoji);
       }
     });
-
   const displayedEmojis = recentOtherEmojis.slice(0, 5);
-  const showEllipsis = recentOtherEmojis.length > 5;
 
   // 4. Group data, place "Other" bar last
   const grouped = d3.rollup(
-    favorites,
+    data,
     v => v.length,
     d => topEmojiSet.has(d.emoji) ? d.emoji : "Other"
   );
@@ -55,7 +80,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   if (otherEntry) {
     otherEntry.stackedEmojis = displayedEmojis;
-    otherEntry.showEllipsis = showEllipsis;
     countArray.push(otherEntry); // always last
   }
 
@@ -192,6 +216,4 @@ document.addEventListener("DOMContentLoaded", function () {
       .attr("fill", "#333")
       .text(labelText);
   });
-
-
-});
+};
