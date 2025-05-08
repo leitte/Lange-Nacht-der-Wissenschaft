@@ -40,6 +40,9 @@ const juiceColors = {
 document.getElementById("theme-toggle").addEventListener("click", () => {
     currentTheme = currentTheme === "light" ? "dark" : "light";
 
+    
+    const clockHand = document.getElementById("clock-hand");
+    clockHand.setAttribute("stroke", colorSchemes[currentTheme]); // Change clock hand color based on theme
     const mosaic_data = d3.select("#mosaic-plot").datum(); // Retrieve the current data bound to the SVG
     if (mosaic_data) {
         renderMosaicPlot(mosaic_data); // Re-render the plot with the new theme
@@ -58,10 +61,5 @@ document.getElementById("theme-toggle").addEventListener("click", () => {
     const emoji_data = d3.select("#emoji-countplot").datum(); // Retrieve the current data bound to the SVG
     if (emoji_data) {
         drawLollis(emoji_data); // Re-render the lollipop chart with the new theme
-    }
-
-    const map_data = d3.select("#map").datum(); // Retrieve the current data bound to the map
-    if (map_data) {
-        drawMap(map_data); // Re-render the map with the new theme
     }
 });
