@@ -58,7 +58,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   function animateClockHand() {
     const clockHand = document.getElementById("clock-hand");
-    console.log("Clockhand", clockHand)
     let angle = 0; // Start angle
 
     const updateInterval = 30000; 
@@ -67,7 +66,6 @@ document.addEventListener("DOMContentLoaded", function () {
     setInterval(() => {
       angle = (angle + (360*pointerInteval/updateInterval)) % 360;
       clockHand.setAttribute("transform", `rotate(${angle} 50 50)`); // Rotate around the clock's center
-      console.log("updatespeed", (360*pointerInteval/updateInterval));
     }, pointerInteval);
   }
 

@@ -1,4 +1,4 @@
-const csvUrl = 'set url here';
+const csvUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTsDoYiGxoYXJuvUnNolA1Sn6QNYGGhjcDP-lFaEp79V-VIvpt0nui2IUwvZIDkMyMdl3hIzN_4-ae8/pub?output=csv&foo=';
 
 const DashboardData = {
     data: null,

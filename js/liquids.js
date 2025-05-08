@@ -93,10 +93,11 @@ function loadLiquidFillGauge(elementId, value, config, label) {
     if (config == null) config = liquidFillGaugeDefaultSettings();
 
     const gauge = d3.select("#" + elementId);
-    const radius = Math.min(parseInt(gauge.style("width")), parseInt(gauge.style("height"))) / 2;
+    const [ , , width, height ] = gauge.attr("viewBox").split(" ").map(Number);
+    const radius = Math.min(width, height) / 2;
 
-    const locationX = parseInt(gauge.style("width")) / 2 - radius;
-    const locationY = parseInt(gauge.style("height")) / 2 - radius;
+    const locationX = width / 2 - radius;
+    const locationY = height / 2 - radius;
     const fillPercent = Math.max(config.minValue, Math.min(config.maxValue, value)) / config.maxValue;
 
     let waveHeightScale = null;

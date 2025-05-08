@@ -47,7 +47,7 @@ function drawMap(data) {
 
   // Create a map instance
   if (firstdraw) {
-    map = L.map('map', { attributionControl: false, zoomControl: false }).setView([49.438, 7.757], 13);
+    map = L.map('map', { attributionControl: false, zoomControl: false }).setView([49.437, 7.757], 13);
   }
 
   // Create a map background

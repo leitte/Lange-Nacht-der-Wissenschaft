@@ -31,9 +31,8 @@ function renderChart(users) {
 
     // Setup SVG
     const svg = d3.select("#countplot"),
-        width = +svg.attr("width"),
-        height = +svg.attr("height"),
-        margin = { top: 5, right: 5, bottom: 5, left: 5 };
+        [ , , width, height ] = svg.attr("viewBox").split(" ").map(Number),
+        margin = { top: 0, right: 0, bottom: 0, left: 0 };
 
     svg.selectAll("*").remove();
 
@@ -70,7 +69,7 @@ function renderChart(users) {
         .attr("x", d => x(d.hour) + x.bandwidth() / 2)
         .attr("y", plotHeight - 4)
         .attr("text-anchor", "middle")
-        .attr("font-size", "10px")
+        .attr("font-size", "16px")
         .attr("fill", textColors[currentTheme]) // Use theme-based text color
         .text(d => `${d.hour}h`);
 

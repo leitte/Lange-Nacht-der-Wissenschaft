@@ -17,8 +17,8 @@
   <!-- <script src="https://cdn.jsdelivr.net/npm/chart.js"></script> -->
 
   <!-- Include two files below for dynamic updates + set url in dataloader -->
-  <!-- <script src="js/dataloader.js"></script>
-  <script src="js/kpiupdates.js"></script> -->
+  <script src="js/dataloader.js"></script>
+  <script src="js/kpiupdates.js"></script>
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
     integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
@@ -39,10 +39,8 @@
       background-color: white;
     }
 
-    @media (min-width: 1536px) {
-      .container {
-        max-width: 1536px;
-      }
+    .container {
+      max-width: 95%;
     }
 
     footer {
@@ -58,6 +56,12 @@
       min-height: 100vh;
     }
 
+    @media (min-width: 76em) {
+      .container {
+        width: 95%;
+      }
+    }
+
     main {
       flex: 1;
     }
@@ -67,6 +71,10 @@
       --pico-font-weight: 400;
       --pico-typography-spacing-vertical: 0.75rem;
       font-size: 50px;
+    }
+
+    hr {
+      margin: 10px 0 8px 0;
     }
 
     .flex-column {
@@ -81,23 +89,23 @@
     }
 
     .card.metric h4 {
-      margin-bottom: 0.2rem;
+      margin-bottom: 0;
     }
 
     .card.metric h2 {
-      margin-bottom: 0.2rem;
+      margin-bottom: 0;
     }
 
     .card.metric .emoji-icon {
-      font-size: 2rem;
+      font-size: 1.5rem;
       line-height: 1;
-      margin-bottom: 0.rem;
+      margin-bottom: 0;
     }
 
     .card h3 {
       font-weight: 200;
       color: #333;
-      margin-bottom: .5rem;
+      margin-bottom: 0rem;
     }
 
     .chart-placeholder {
@@ -120,7 +128,7 @@
     }
 
     #map {
-      height: 450px;
+      height: 430px;
       width: 98%;
       margin: auto;
     }
@@ -129,33 +137,34 @@
 
 <body>
   <div class="page container">
-    <header class="row" style="align-items: flex-end; margin-top: 1rem;">
+    <header class="row" style="align-items: flex-end; margin-top: 0.8rem;">
       <div class="card col-xs-4">
         <h1 class="title">Sehen und Verstehen</h1>
         <div class="subtitle" style="color: #8d8d8d;">Erlebe, wie Daten lebendig werden.</div>
       </div>
       <div class="card flex-column center metric col-xs-2">
-        <svg id="activity-clock" width="40" height="40" viewBox="0 0 100 100">
+        <svg id="activity-clock" width="35" height="35" viewBox="0 0 100 100">
           <circle cx="50" cy="50" r="45" fill="none" stroke="#e0e0e0" stroke-width="8"></circle>
-          <line id="clock-hand" x1="50" y1="50" x2="50" y2="18" stroke="#9ED5E8" stroke-width="6" stroke-linecap="round"></line>
+          <line id="clock-hand" x1="50" y1="50" x2="50" y2="18" stroke="#9ED5E8" stroke-width="6"
+            stroke-linecap="round"></line>
         </svg>
-        <h4>Aktivität</h3>
-          <svg id="countplot" width="250" height="50"></svg>
+        <h4>Aktivität</h4>
+          <svg id="countplot" width="100%" height="100%" viewBox="0 0 285 42" style="max-height: 42px;"></svg>
       </div>
       <div class="card flex-column center metric col-xs-2">
-        <i class="fas fa-user fa-2x" style="color: #333;"></i>
-        <h4>Teilnehmer</h3>
-          <h2 id="kpi-total">39</h2>
+        <i class="fas fa-user" style="color: #333; font-size: 1.5em;"></i>
+        <h4>Teilnehmer</h4>
+        <h2 id="kpi-total">39</h2>
       </div>
       <div class="card flex-column center metric col-xs-2">
         <div class="emoji-icon" id="kpi-emoji">🫶</div>
-        <h4>Top Emoji</h3>
+        <h4>Top Emoji</h4>
           <h2 id="kpi-emoji-count">12</h2>
       </div>
       <div class="card flex-column center metric col-xs-2">
-        <i class="fas fa-location-dot fa-2x" style="color: #333;"></i>
-        <h4 id="kpi-location">Monte Mare</h3>
-          <h2 id="kpi-location-count">42</h2>
+        <i class="fas fa-location-dot" style="color: #333; font-size: 1.5em;"></i>
+        <h4 id="kpi-location">Monte Mare</h4>
+        <h2 id="kpi-location-count">42</h2>
       </div>
     </header>
     <hr />
@@ -163,39 +172,45 @@
       <div class="row">
         <div class="card flex-column center col-xs-4 border-right">
           <h3>Welcher Urlaub darf es sein?</h3>
-          <svg id="mosaic-plot" width="500" height="350"></svg>
+          <svg id="mosaic-plot" width="100%" height="100%" viewBox="0 0 500 300"
+            preserveAspectRatio="xMidYMid meet"></svg>
         </div>
         <div class="card flex-column center col-xs-4 border-right">
           <h3>Unsere Emoji Top 10</h3>
-          <svg id="emoji-countplot" width="500" height="350"></svg>
+          <svg id="emoji-countplot" width="100%" height="100%" viewBox="0 0 500 300"
+            preserveAspectRatio="xMidYMid meet"></svg>
         </div>
-        <div class="card flex-column center col-xs-4">
+        <div class="card center col-xs-4">
           <h3>Wir trinken am liebsten</h3>
           <div
-            style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; justify-items: center; align-items: center;">
-            <svg id="coffee-gauge" width="180" height="160"></svg>
-            <svg id="tea-gauge" width="180" height="160"></svg>
-            <svg id="juice-gauge" width="180" height="160"></svg>
-            <svg id="energy-gauge" width="180" height="160"></svg>
+            style="display: grid; grid-template-columns: 1fr 1fr; justify-items: center; align-items: center;">
+            <svg id="coffee-gauge" width="90%" height="90%" viewBox="0 0 200 140"
+              preserveAspectRatio="xMidYMid meet"></svg>
+            <svg id="tea-gauge" width="90%" height="90%" viewBox="0 0 200 140"
+              preserveAspectRatio="xMidYMid meet"></svg>
+            <svg id="juice-gauge" width="90%" height="90%" viewBox="0 0 200 140"
+              preserveAspectRatio="xMidYMid meet"></svg>
+            <svg id="energy-gauge" width="90%" height="90%" viewBox="0 0 200 140"
+              preserveAspectRatio="xMidYMid meet"></svg>
           </div>
         </div>
       </div>
       <hr />
       <div class="card center col-xs-12">
-        <h3>Hier trifft sich Kaiserslautern</h3>
+        <h3 style="margin-bottom: 0.3rem;">Hier trifft sich Kaiserslautern</h3>
       </div>
-
       <div class="row">
         <div class="col-xs-8">
           <div id="map"></div>
         </div>
         <div class="col-xs-4">
-          <svg id="location-countplot" width="500" height="450"></svg>
+          <svg id="location-countplot" width="100%" height="100%" viewBox="0 0 500 380"
+            preserveAspectRatio="xMidYMid meet" style="margin: -8px 0 -8px 0"></svg>
         </div>
       </div>
     </main>
-    <footer style="margin-bottom: .5rem; display: flex; align-items: center; justify-content: space-between;">
-      <button id="theme-toggle" style="background: transparent; border: none; height: 100%;">Theme wechseln</button>
+    <footer style="margin-bottom: 0; display: flex; align-items: center; justify-content: space-between; font-size: 0.8rem;">
+      <button id="theme-toggle" style="background: transparent; border: none; height: 100%; padding: 0 0 0 0.5rem; font-size: 0.8rem;">Theme wechseln</button>
       <span>Datenvisualisierung @ RPTU</span>
     </footer>
   </div>

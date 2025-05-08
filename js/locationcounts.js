@@ -69,9 +69,8 @@ function drawBars(data) {
   counts.sort((a, b) => b.count - a.count);
 
   // 5. Layout
-  const svg = d3.select("#location-countplot"),
-    width = +svg.attr("width"),
-    height = +svg.attr("height"),
+  var svg = d3.select("#location-countplot"),
+    [, , width, height] = svg.attr("viewBox").split(" ").map(Number),
     margin = { top: 0, right: 20, bottom: 15, left: 10 };
 
   svg.selectAll("*").remove();
@@ -89,7 +88,7 @@ function drawBars(data) {
     .range([0, plotHeight])
     .padding(0.2);
 
-  const g = svg.append("g")
+    const g = svg.append("g")
     .attr("transform", `translate(${margin.left},${margin.top})`);
 
   // 6. Bars
@@ -132,7 +131,7 @@ function drawBars(data) {
     .attr("x", d => x(d))
     .attr("y", plotHeight + 10)
     .attr("text-anchor", "middle")
-    .attr("font-size", "10px")
+    .attr("font-size", "14px")
     .attr("fill", textColors[currentTheme]) // Use theme-based text color
     .text(d => `${d}%`);
 
@@ -142,9 +141,9 @@ function drawBars(data) {
     const imageSize = y.bandwidth() * 0.8; // Adjust image size relative to bar height
 
     g.append("circle")
-      .attr("cx", x(d.percentage) ) // Position circle slightly to the right of the bar
+      .attr("cx", x(d.percentage)) // Position circle slightly to the right of the bar
       .attr("cy", centerY)
-      .attr("r", imageSize*0.6) // Circle radius
+      .attr("r", imageSize * 0.6) // Circle radius
       .attr("fill", "#fff") // White background for the logo
       .attr("stroke", "none") // no border
 
@@ -158,7 +157,7 @@ function drawBars(data) {
     g.append("circle")
       .attr("cx", x(d.percentage)) // Position circle slightly to the right of the bar
       .attr("cy", centerY)
-      .attr("r", imageSize*0.65) // Circle radius
+      .attr("r", imageSize * 0.65) // Circle radius
       .attr("fill", "transparent") // Transparent background for the logo
       .attr("stroke", colorSchemes[currentTheme]) // Light gray border
       .attr("stroke-width", 4);
