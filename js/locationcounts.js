@@ -74,6 +74,8 @@ function drawBars(data) {
     height = +svg.attr("height"),
     margin = { top: 0, right: 20, bottom: 15, left: 10 };
 
+  svg.selectAll("*").remove();
+
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
 
@@ -99,7 +101,7 @@ function drawBars(data) {
     .attr("y", d => y(d.name)) // Position bars based on name
     .attr("width", plotWidth) // Full width of the plot
     .attr("height", y.bandwidth()) // Bar height based on y scale
-    .attr("fill", "#f0f0f0"); // Light gray color
+    .attr("fill", backgroundColors[currentTheme]); // Light gray color
 
   g.selectAll("rect.bar")
     .data(counts)
@@ -109,7 +111,7 @@ function drawBars(data) {
     .attr("y", d => y(d.name)) // Position bars based on name
     .attr("width", d => x(d.percentage)) // Bar length based on count
     .attr("height", y.bandwidth()) // Bar height based on y scale
-    .attr("fill", "#abd9ec");
+    .attr("fill", colorSchemes[currentTheme]) // Use theme-based color;
 
   // 7. Grid lines in front
   const xTicks = x.ticks(4);
@@ -120,7 +122,7 @@ function drawBars(data) {
     .attr("x2", d => x(d))
     .attr("y1", 0)
     .attr("y2", plotHeight)
-    .attr("stroke", "white")
+    .attr("stroke", textColors[currentTheme]) // Use theme-based grid color
     .attr("stroke-width", 1)
     .attr("stroke-dasharray", "2,2");
 
@@ -131,7 +133,7 @@ function drawBars(data) {
     .attr("y", plotHeight + 10)
     .attr("text-anchor", "middle")
     .attr("font-size", "10px")
-    .attr("fill", "#666")
+    .attr("fill", textColors[currentTheme]) // Use theme-based text color
     .text(d => `${d}%`);
 
   // 8. Location logos
@@ -153,14 +155,16 @@ function drawBars(data) {
       .attr("height", imageSize) // Set image height
       .attr("href", `static/logos/${d.icon}`); // Path to the logo image
 
-      g.append("circle")
+    g.append("circle")
       .attr("cx", x(d.percentage)) // Position circle slightly to the right of the bar
       .attr("cy", centerY)
       .attr("r", imageSize*0.65) // Circle radius
       .attr("fill", "transparent") // Transparent background for the logo
-      .attr("stroke", "#abd9ec") // Light gray border
+      .attr("stroke", colorSchemes[currentTheme]) // Light gray border
       .attr("stroke-width", 4);
   });
-};
+
+  svg.datum(data); // Bind the data to the SVG for future updates
+}
 
 

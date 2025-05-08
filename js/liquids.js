@@ -8,51 +8,59 @@
  */
 
 document.addEventListener("DOMContentLoaded", function () {
-  function updateGauges(data) {
-      const validRows = data.filter(d => d.Timestamp && d.Timestamp.trim() !== "");
-      const total = validRows.length;
-      const drinks = validRows.map(d => d["Ich trinke gerne ..."]);
-      var absolute = 0;
-      // Update the gauges with new values
-      ['Kaffee', 'Tee', 'Energy Drink', 'Saft'].forEach((label, index) => {
-          const gauge = [gauge_coffee, gauge_tea, gauge_energy, gauge_juice][index];
-          absolute = drinks.filter(e => e && e.includes(label)).length;
-          const value = Math.round(absolute / total * 100);
-          gauge.update(value);
-      });
-  }
+    function updateGauges(data) {
+        const validRows = data.filter(d => d.Timestamp && d.Timestamp.trim() !== "");
+        const total = validRows.length;
+        const drinks = validRows.map(d => d["Ich trinke gerne ..."]);
+        var absolute = 0;
+        // Update the gauges with new values
+        ['Kaffee', 'Tee', 'Energy Drink', 'Saft'].forEach((label, index) => {
+            const gauge = [gauge_coffee, gauge_tea, gauge_energy, gauge_juice][index];
+            absolute = drinks.filter(e => e && e.includes(label)).length;
+            const value = Math.round(absolute / total * 100);
+            gauge.update(value);
+        });
+    }
 
-  // Configure the gauges
-  var config_coffee = liquidFillGaugeDefaultSettings();
-      config_coffee.waveColor = "#94550b";
-  var config_tea = liquidFillGaugeDefaultSettings();
-      config_tea.waveColor = "#B7CF9F";
-      config_tea.waveOffset = 0.5;
-      config_tea.waveAnimateTime = 1700;
-      config_tea.waveTextColor = "#333";
-  var config_energy = liquidFillGaugeDefaultSettings();
-      config_energy.waveColor = "#90EE90";
-      config_energy.waveTextColor = "#333";
-  var config_juice = liquidFillGaugeDefaultSettings();
-      config_juice.waveColor = "#f9e055";
-      config_juice.waveOffset = 0.5;
-      config_juice.waveAnimateTime = 1700;
-      config_juice.waveTextColor = "#333";
+    const themeToggle = document.getElementById("theme-toggle");
 
-  var gauge_coffee = loadLiquidFillGauge("coffee-gauge", 0, config_coffee, "Kaffee");
-  var gauge_tea = loadLiquidFillGauge("tea-gauge", 0, config_tea, "Tee");
-  var gauge_energy = loadLiquidFillGauge("energy-gauge", 0, config_energy, "Energy Drink");
-  var gauge_juice = loadLiquidFillGauge("juice-gauge", 0, config_juice, "Saft");
-  
-  if (typeof DashboardData !== "undefined" && DashboardData.subscribe) {
-      DashboardData.subscribe(updateGauges);
-  }
-  else {
-      [gauge_coffee, gauge_tea, gauge_energy, gauge_juice].forEach(gauge => {
-          gauge.update(Math.floor(Math.random() * 101));
-      }
-      );
-  }
+    // Configure the gauges
+    var config_coffee = liquidFillGaugeDefaultSettings();
+    config_coffee.waveColor = "#94550b";
+    config_coffee.waveTextColor = "#F3F3F3";
+    var config_tea = liquidFillGaugeDefaultSettings();
+    config_tea.waveColor = "#B7CF9F";
+    config_tea.waveOffset = 0.5;
+    config_tea.waveAnimateTime = 1700;
+    var config_energy = liquidFillGaugeDefaultSettings();
+    config_energy.waveColor = "#90EE90";
+    var config_juice = liquidFillGaugeDefaultSettings();
+    config_juice.waveColor = "#f9e055";
+    config_juice.waveOffset = 0.5;
+    config_juice.waveAnimateTime = 1700;
+
+    var gauge_coffee = loadLiquidFillGauge("coffee-gauge", 0, config_coffee, "Kaffee");
+    var gauge_tea = loadLiquidFillGauge("tea-gauge", 0, config_tea, "Tee");
+    var gauge_energy = loadLiquidFillGauge("energy-gauge", 0, config_energy, "Energy Drink");
+    var gauge_juice = loadLiquidFillGauge("juice-gauge", 0, config_juice, "Saft");
+
+    // Add event listener to the theme toggle button
+    themeToggle.addEventListener("click", function () {
+        [gauge_coffee, gauge_tea, gauge_energy, gauge_juice].forEach((gauge, index) => {
+            const { waveColor, waveTextColor } = juiceColors[currentTheme][index];
+            gauge.changeWaveColor(waveColor, waveTextColor);
+        });
+    });
+
+    if (typeof DashboardData !== "undefined" && DashboardData.subscribe) {
+        DashboardData.subscribe(updateGauges);
+    }
+    else {
+        [gauge_coffee, gauge_tea, gauge_energy, gauge_juice].forEach(gauge => {
+            gauge.update(Math.floor(Math.random() * 101));
+        }
+        );
+    }
 });
 
 function liquidFillGaugeDefaultSettings() {
@@ -76,7 +84,7 @@ function liquidFillGaugeDefaultSettings() {
         valueCountUp: true, // If true, the displayed value counts up from 0 to it's final value upon loading. If false, the final value is displayed.
         displayPercent: true, // If true, a % symbol is displayed after the value.
         textColor: "#333", // The color of the value text when the wave does not overlap it.
-        waveTextColor: "#F3F3F3", // The color of the value text when the wave overlaps it.    
+        waveTextColor: "#333333", // The color of the value text when the wave overlaps it.  
         labelTextSize: 0.6 // The relative height of the label text to display in the wave circle. 1 = 50%
     };
 }
@@ -142,19 +150,19 @@ function loadLiquidFillGauge(elementId, value, config, label) {
 
     // Scales for controlling the position of the clipping path.
     const waveRiseScale = d3.scaleLinear()
-       // The clipping area size is the height of the fill circle + the wave height, so we position the clip wave
-       // such that the it will overlap the fill circle at all when at 0%, and will totally cover the fill
-       // circle at 100%.
-       .range([(fillCircleMargin + fillCircleRadius * 2 + waveHeight), (fillCircleMargin - waveHeight)])
-       .domain([0, 1]);
+        // The clipping area size is the height of the fill circle + the wave height, so we position the clip wave
+        // such that the it will overlap the fill circle at all when at 0%, and will totally cover the fill
+        // circle at 100%.
+        .range([(fillCircleMargin + fillCircleRadius * 2 + waveHeight), (fillCircleMargin - waveHeight)])
+        .domain([0, 1]);
     const waveAnimateScale = d3.scaleLinear()
         .range([0, waveClipWidth - fillCircleRadius * 2]) // Push the clip area one full wave then snap back.
         .domain([0, 1]);
 
     // Scale for controlling the position of the text within the gauge.
     const textRiseScaleY = d3.scaleLinear()
-       .range([fillCircleMargin + fillCircleRadius * 2, (fillCircleMargin + textPixels * 0.7)])
-       .domain([0, 1]);
+        .range([fillCircleMargin + fillCircleRadius * 2, (fillCircleMargin + textPixels * 0.7)])
+        .domain([0, 1]);
 
     // Center the gauge within the parent SVG.
     const gaugeGroup = gauge.append("g")
@@ -173,12 +181,12 @@ function loadLiquidFillGauge(elementId, value, config, label) {
 
     // Text where the wave does not overlap.
     const text1 = gaugeGroup.append("text")
-       .text(textRounder(textStartValue) + percentText)
-       .attr("class", "liquidFillGaugeText")
-       .attr("text-anchor", "middle")
-       .attr("font-size", textPixels + "px")
-       .style("fill", config.textColor)
-       .attr('transform', 'translate(' + radius + ',' + textRiseScaleY(config.textVertPosition) + ')');
+        .text(textRounder(textStartValue) + percentText)
+        .attr("class", "liquidFillGaugeText")
+        .attr("text-anchor", "middle")
+        .attr("font-size", textPixels + "px")
+        .style("fill", config.textColor)
+        .attr('transform', 'translate(' + radius + ',' + textRiseScaleY(config.textVertPosition) + ')');
     let text1InterpolatorValue = textStartValue;
 
     // Label text where the wave does not overlap.
@@ -204,7 +212,7 @@ function loadLiquidFillGauge(elementId, value, config, label) {
         .attr("T", 0);
 
     // The inner circle with the clipping wave attached.
-    const fillCircleGroup = gaugeGroup.append("g")
+    var fillCircleGroup = gaugeGroup.append("g")
         .attr("clip-path", "url(#clipWave" + elementId + ")");
     fillCircleGroup.append("circle")
         .attr("cx", radius)
@@ -214,12 +222,12 @@ function loadLiquidFillGauge(elementId, value, config, label) {
 
     // Text where the wave does overlap.
     const text2 = fillCircleGroup.append("text")
-       .text(textRounder(textStartValue))
-       .attr("class", "liquidFillGaugeText")
-       .attr("text-anchor", "middle")
-       .attr("font-size", textPixels + "px")
-       .style("fill", config.waveTextColor)
-       .attr('transform', 'translate(' + radius + ',' + textRiseScaleY(config.textVertPosition) + ')');
+        .text(textRounder(textStartValue))
+        .attr("class", "liquidFillGaugeText")
+        .attr("text-anchor", "middle")
+        .attr("font-size", textPixels + "px")
+        .style("fill", config.waveTextColor)
+        .attr('transform', 'translate(' + radius + ',' + textRiseScaleY(config.textVertPosition) + ')');
     let text2InterpolatorValue = textStartValue;
 
     // Label text where the wave does overlap.
@@ -234,26 +242,26 @@ function loadLiquidFillGauge(elementId, value, config, label) {
     // Make the value count up.
     if (config.valueCountUp) {
         text1.transition()
-        .duration(config.waveRiseTime)
-        .tween("text", function () {
-            const i = d3.interpolateNumber(text1InterpolatorValue, textFinalValue);
-            return function (t) {
-                text1InterpolatorValue = textRounder(i(t));
-                // Set the gauge's text with the new value and append the % sign
-                // to the end
-                text1.text(text1InterpolatorValue + percentText);
-            }
-        });
+            .duration(config.waveRiseTime)
+            .tween("text", function () {
+                const i = d3.interpolateNumber(text1InterpolatorValue, textFinalValue);
+                return function (t) {
+                    text1InterpolatorValue = textRounder(i(t));
+                    // Set the gauge's text with the new value and append the % sign
+                    // to the end
+                    text1.text(text1InterpolatorValue + percentText);
+                }
+            });
         text2.transition()
             .duration(config.waveRiseTime)
             .tween("text", function () {
                 const i = d3.interpolateNumber(text2InterpolatorValue, textFinalValue);
-                return function (t)  {
+                return function (t) {
                     text2InterpolatorValue = textRounder(i(t));
-                // Set the gauge's text with the new value and append the % sign
-                // to the end                
-                text2.text(text2InterpolatorValue + percentText);
-            }
+                    // Set the gauge's text with the new value and append the % sign
+                    // to the end                
+                    text2.text(text2InterpolatorValue + percentText);
+                }
             });
 
         //var textTween = function () {
@@ -275,8 +283,8 @@ function loadLiquidFillGauge(elementId, value, config, label) {
             .transition()
             .duration(config.waveRiseTime)
             .attr('transform', 'translate(' + waveGroupXPosition + ',' + waveRiseScale(fillPercent) + ')')
-        // .each("start", function () { wave.attr('transform', 'translate(1,0)'); }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
-        .on("start", function () { wave.attr('transform', 'translate(1,0)'); }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
+            // .each("start", function () { wave.attr('transform', 'translate(1,0)'); }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
+            .on("start", function () { wave.attr('transform', 'translate(1,0)'); }); // This transform is necessary to get the clip wave positioned correctly when waveRise=true and waveAnimate=false. The wave will not position correctly without this, but it's not clear why this is actually necessary.
     } else {
         waveGroup.attr('transform', 'translate(' + waveGroupXPosition + ',' + waveRiseScale(fillPercent) + ')');
     }
@@ -307,16 +315,16 @@ function loadLiquidFillGauge(elementId, value, config, label) {
                 textRounderUpdater = function (value) { return parseFloat(value).toFixed(2); };
             }
             text1.transition()
-        .duration(config.waveRiseTime)
-        .tween("text", function () {
-            const i = d3.interpolateNumber(text1InterpolatorValue, newFinalValue);
-            return function (t) {
-                text1InterpolatorValue = textRounder(i(t));
-                // Set the gauge's text with the new value and append the % sign
-                // to the end
-                text1.text(text1InterpolatorValue + percentText);
-            }
-        });
+                .duration(config.waveRiseTime)
+                .tween("text", function () {
+                    const i = d3.interpolateNumber(text1InterpolatorValue, newFinalValue);
+                    return function (t) {
+                        text1InterpolatorValue = textRounder(i(t));
+                        // Set the gauge's text with the new value and append the % sign
+                        // to the end
+                        text1.text(text1InterpolatorValue + percentText);
+                    }
+                });
             text2.transition()
                 .duration(config.waveRiseTime)
                 .tween("text", function () {
@@ -379,6 +387,18 @@ function loadLiquidFillGauge(elementId, value, config, label) {
             waveGroup.transition()
                 .duration(config.waveRiseTime)
                 .attr('transform', 'translate(' + waveGroupXPosition + ',' + newHeight + ')')
+        }
+
+        this.changeWaveColor = function (newWaveColor, newWaveTextColor) {
+            if (newWaveTextColor) {
+                config.waveTextColor = newWaveTextColor;
+                text2.style("fill", newWaveTextColor);
+                labelText2.style("fill", newWaveTextColor);
+            }
+            if (newWaveColor) {
+                config.waveColor = newWaveColor;
+                fillCircleGroup.select("circle").style("fill", newWaveColor);
+            }
         }
     }
 

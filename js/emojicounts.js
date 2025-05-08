@@ -84,10 +84,12 @@ function drawLollis(data) {
   }
 
   // 5. Layout
-  const svg = d3.select("#emoji-countplot"),
+  var svg = d3.select("#emoji-countplot"),
     width = +svg.attr("width"),
     height = +svg.attr("height"),
     margin = { top: 32, right: 40, bottom: 37, left: 5 };
+
+  svg.selectAll("*").remove(); // Clear previous content
 
   const plotWidth = width - margin.left - margin.right;
   const plotHeight = height - margin.top - margin.bottom;
@@ -118,7 +120,8 @@ function drawLollis(data) {
       if (i === 0) return "#FFD700"; // Gold for the first stem
       if (i === 1) return "#C0C0C0"; // Silver for the second stem
       if (i === 2) return "#CD7F32"; // Bronze for the third stem
-      return "#E0E0E0"; // Default color for other stems
+      if (i >= 3 && i < 10) return colorSchemes[currentTheme]; // Use theme-based color for places 4 to 10
+      return colorSchemes[currentTheme]; // Default color for other stems
     })
     .attr("stroke-width", (d, i) => {
       if (i < 3) return 10;
@@ -139,7 +142,8 @@ function drawLollis(data) {
       if (i === 0) return "#FFD700"; // Gold for the first stem
       if (i === 1) return "#C0C0C0"; // Silver for the second stem
       if (i === 2) return "#CD7F32"; // Bronze for the third stem
-      return "#abd9ec"; // Default color for other stems
+      if (i >= 3 && i < 10) return colorSchemes[currentTheme]; // Use theme-based color for places 4 to 10
+      return colorSchemes[currentTheme]; // Default color for other stems
     })
     .attr("stroke-width", (d, i) => {
       if (i === 10) return 9;
@@ -216,4 +220,7 @@ function drawLollis(data) {
       .attr("fill", "#333")
       .text(labelText);
   });
+
+
+  svg.datum(data); // Bind the data to the SVG for future updates
 };

@@ -29,6 +29,7 @@
   <script defer src="js/emojicounts.js"></script> <!-- Defer = wait until DOM is ready -->
   <script defer src="js/map.js"></script> <!-- Defer = wait until DOM is ready -->
   <script defer src="js/locationcounts.js"></script> <!-- Defer = wait until DOM is ready -->
+  <script defer src="js/toggleColors.js"></script> <!-- Defer = wait until DOM is ready -->
   <title>Sehen und Verstehen</title>
   <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
   <style>
@@ -148,7 +149,7 @@
       </div>
       <div class="card flex-column center metric col-xs-2">
         <div class="emoji-icon" id="kpi-emoji">🫶</div>
-        <h4>💛-Emoji</h3>
+        <h4>Top Emoji</h3>
           <h2 id="kpi-emoji-count">12</h2>
       </div>
       <div class="card flex-column center metric col-xs-2">
@@ -193,8 +194,9 @@
         </div>
       </div>
     </main>
-    <footer style="margin-bottom: .5rem;">
-      Datenvisualisierung @ RPTU
+    <footer style="margin-bottom: .5rem; display: flex; align-items: center; justify-content: space-between;">
+      <button id="theme-toggle" style="background: transparent; border: none; height: 100%;">Theme wechseln</button>
+      <span>Datenvisualisierung @ RPTU</span>
     </footer>
   </div>
 </body>

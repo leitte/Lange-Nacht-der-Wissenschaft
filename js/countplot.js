@@ -52,7 +52,8 @@ function renderChart(users) {
     const g = svg.append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
 
-    // Light blue bars
+
+    // Bars
     g.selectAll("rect")
         .data(countArray)
         .join("rect")
@@ -60,9 +61,9 @@ function renderChart(users) {
         .attr("y", d => y(d.count))
         .attr("width", x.bandwidth())
         .attr("height", d => plotHeight - y(d.count))
-        .attr("fill", "#abd9ec"); // light blue (relaxed)
+        .attr("fill", colorSchemes[currentTheme]); // Use theme-based color
 
-    // Dark bottom-aligned hour labels
+    // Hour labels
     g.selectAll("text")
         .data(countArray)
         .join("text")
@@ -70,6 +71,8 @@ function renderChart(users) {
         .attr("y", plotHeight - 4)
         .attr("text-anchor", "middle")
         .attr("font-size", "10px")
-        .attr("fill", "#333") // dark gray or use "#000" for black
+        .attr("fill", textColors[currentTheme]) // Use theme-based text color
         .text(d => `${d.hour}h`);
-};
+
+    svg.datum(users); // Bind the data to the SVG for future updates
+}

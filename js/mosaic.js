@@ -75,11 +75,9 @@ function renderMosaicPlot(data) {
         .domain([0, total])
         .range([0, plotWidth]);
 
-    // const blue = #abd9ec;
-    // const yellow = #f9e055;
     const color = d3.scaleOrdinal()
         .domain(["Wellness", "Abenteuer", "Kultur", "Shopping"])
-        .range(["#abd9ec", "#B7CF9F", "#f9e055", "#FFB6C1"]);
+        .range(mosaicColors[currentTheme]);
 
     const plotGroup = svg.append("g")
         .attr("transform", `translate(${margin.left},${margin.top})`);
@@ -219,4 +217,6 @@ function renderMosaicPlot(data) {
 
         labelYOffset += h;
     });
-};
+
+    svg.datum(data); // Bind the data to the SVG for future updates
+}
