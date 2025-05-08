@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function updateGauges(data) {
       const validRows = data.filter(d => d.Timestamp && d.Timestamp.trim() !== "");
       const total = validRows.length;
-      const drinks = validRows.map(d => d["Leckere Getränke"]);
+      const drinks = validRows.map(d => d["Ich trinke gerne ..."]);
       var absolute = 0;
       // Update the gauges with new values
       ['Kaffee', 'Tee', 'Energy Drink', 'Saft'].forEach((label, index) => {
