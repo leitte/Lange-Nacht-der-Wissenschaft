@@ -27,7 +27,7 @@ function updateLollisWithSurveyData(data) {
   const emojiTimestampPairs = data
     .filter(row => row["Lieblingsemoji?"] && row["Timestamp"]) // Ensure both fields exist
     .map(row => ({
-      emoji: row["Lieblingsemoji?"],
+      emoji: row["Lieblingsemoji?"].match(emojiRegex)?.[0] || "", // Extract emoji using regex
       timestamp: new Date(row["Timestamp"]) // Convert timestamp to a Date object
     }))
     .filter(pair => emojiRegex.test(pair.emoji)); // Filter out non-emoji entries
@@ -134,7 +134,7 @@ function drawLollis(data) {
     .join("circle")
     .attr("class", "lollipop")
     .attr("cx", d => x(d.emoji) + x.bandwidth() / 2)
-    .attr("cy", (d, i) => (i === countArray.length - 1 ? y(d.count) - 3 : y(d.count) - 10)) // Position at the count value
+    .attr("cy", (d, i) => (i === countArray.length - 1 ? y(d.count) + 10 : y(d.count) - 10)) // Position at the count value
     .attr("r", (d, i) => (i === countArray.length - 1 ? 35 : 18)) // Radius of the circle
     .attr("fill", "white") // Transparent fill
     .attr("stroke", (d, i) => {
@@ -167,7 +167,7 @@ function drawLollis(data) {
 
     if (d.emoji === "Other" && d.stackedEmojis) {
       const centerX = x(d.emoji) + x.bandwidth() / 2; // Center of the lollipop
-      const centerY = y(d.count); // Center of the circle
+      const centerY = y(d.count) + 10; // Center of the circle
       const radius = 35; // Radius of the big circle
       const emojiRadius = 18; // Radius for emoji placement
 

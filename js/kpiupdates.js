@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const clockHand = document.getElementById("clock-hand");
     let angle = 0; // Start angle
 
-    const updateInterval = 30000; 
+    const updateInterval = 15000; 
     const pointerInteval = 1000;
 
     setInterval(() => {
